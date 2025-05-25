@@ -1,0 +1,84 @@
+---
+description: 
+globs: **/*.ts,**/*.tsx
+alwaysApply: false
+---
+# Guia para SVG `clip-path` no Projeto
+
+Este guia descreve como usamos SVG `clip-path` para criar formas complexas, especialmente para o fundo dinâmico (`<Balatro/>`) em [app/page.tsx](mdc:app/page.tsx).
+
+## Objetivo do `clip-path`
+
+Usamos `clip-path` para definir contornos não retangulares para elementos HTML. No nosso caso, é crucial para criar o recorte curvo no componente de fundo onde o bloco de texto principal se encaixa, conforme o design de referência.
+
+## Estrutura no Código
+
+1.  **Definição do SVG `<clipPath>`:**
+    *   Um elemento `<svg>` com `width="0" height="0"` (para não ocupar espaço visual) é colocado no DOM, geralmente próximo ao elemento que será "clipado".
+    *   Dentro do `<svg>`, usamos `<defs><clipPath id="meuClipPathID" clipPathUnits="objectBoundingBox">...</clipPath></defs>`.
+    *   `id="meuClipPathID"`: Um ID único para referenciar o `clipPath` no CSS.
+    *   `clipPathUnits="objectBoundingBox"`: **Essencial!** Faz com que as coordenadas do path sejam relativas ao tamanho do elemento clipado (0,0 = canto superior esquerdo; 1,1 = canto inferior direito). Isso torna o path responsivo.
+
+2.  **O Elemento `<path>`:**
+    *   Dentro do `<clipPath>`, um único elemento `<path>` define a forma do recorte usando o atributo `d`.
+    *   Exemplo no [app/page.tsx](mdc:app/page.tsx):
+        ```html
+        <clipPath id="heroShapeClipPath" clipPathUnits="objectBoundingBox">
+          <path d="M0,0 L0.95,0 A0.05,0.05 0 0 1 1,0.05 ... Z" />
+        </clipPath>
+        ```
+
+3.  **Aplicação via CSS:**
+    *   O elemento HTML que deve ter a forma customizada recebe o `clip-path` via CSS:
+        ```css
+        .elemento-clipado {
+          clip-path: url(#meuClipPathID);
+        }
+        ```
+    *   Ou inline: `style={{ clipPath: 'url(#meuClipPathID)' }}`.
+
+## Comandos Comuns do Atributo `d` do `<path>`
+
+*   `M x,y`: **M**ove To (Ponto inicial do path ou de um novo sub-path). Semelhante a levantar a caneta.
+*   `L x,y`: **L**ine To (Desenha uma linha reta do ponto atual até x,y).
+*   `H x`: **H**orizontal Line To (Linha horizontal até a coordenada x, mantendo y atual).
+*   `V y`: **V**ertical Line To (Linha vertical até a coordenada y, mantendo x atual).
+*   `C c1x,c1y c2x,c2y x,y`: **C**ubic Bezier Curve (Curva de Bézier Cúbica). `c1x,c1y` e `c2x,c2y` são os dois pontos de controle, `x,y` é o ponto final da curva.
+*   `Q cx,cy x,y`: **Q**uadratic Bezier Curve (Curva de Bézier Quadrática). `cx,cy` é o único ponto de controle, `x,y` é o ponto final.
+*   `A rx,ry x-axis-rotation large-arc-flag sweep-flag x,y`: **A**rc (Arco Elíptico). Complexo, usado para seções de círculos ou elipses.
+    *   `rx,ry`: raios do elipse.
+    *   `x-axis-rotation`: rotação do elipse.
+    *   `large-arc-flag`: 0 para arco menor, 1 para arco maior.
+    *   `sweep-flag`: 0 para sentido anti-horário, 1 para sentido horário.
+    *   `x,y`: ponto final do arco.
+*   `Z`: ClosePath (Fecha o path atual desenhando uma linha reta do ponto atual de volta ao ponto inicial do sub-path).
+
+**Importante:** Letras minúsculas (ex: `m`, `l`, `c`) usam coordenadas relativas ao ponto atual, enquanto maiúsculas usam coordenadas absolutas (geralmente preferível com `objectBoundingBox`).
+
+## Processo de Edição e Depuração do Path
+
+1.  **Ferramentas Visuais (Recomendado):**
+    *   **Software de Design Vetorial:** Figma, Adobe Illustrator, Inkscape. Desenhe a forma desejada sobre uma captura de tela do design. Exporte a forma como SVG. Abra o arquivo SVG em um editor de texto, encontre o elemento `<path>` e copie o valor do seu atributo `d`.
+    *   **Editores SVG Online:** Pesquise por "SVG Path Editor" (ex: editor da Yoksel). Muitos permitem importar/colar paths existentes, editá-los visualmente e ver o resultado.
+2.  **Ajuste Iterativo:**
+    *   Faça pequenas alterações nas coordenadas do path diretamente no código ([app/page.tsx](mdc:app/page.tsx)).
+    *   Salve e observe o resultado no navegador.
+    *   Use as ferramentas de desenvolvedor do navegador para inspecionar o elemento e, se o editor permitir, modificar o path SVG ao vivo (alguns editores de devtools não permitem edição direta de SVG em `<defs>`).
+3.  **Coordenadas `objectBoundingBox`:** Lembre-se que os valores de `x` e `y` no path devem estar entre `0` e `1` (ex: `0.5` é o centro).
+
+## Sincronia com Elementos Adjacentes
+
+*   No nosso caso, o bloco de texto branco deve se encaixar no recorte do `clipPath`.
+*   O `border-radius` do texto (especialmente `rounded-tl-XXpx`) e seu posicionamento (`absolute`, `bottom`, `left`, `transform: translate()`) devem ser ajustados em conjunto com a forma do `clipPath` para criar um encaixe visualmente agradável.
+*   Se o recorte do `clipPath` muda, o arredondamento e o posicionamento do texto provavelmente precisarão de reajuste.
+
+## Erros Comuns e Soluções
+
+*   **Path não fecha / Forma estranha:** Verifique se o path termina com `Z` (se for uma forma fechada). Verifique se há typos nas coordenadas ou comandos.
+*   **`clip-path` não funciona:**
+    *   Verifique se o ID no CSS (`url(#meuClipPathID)`) corresponde exatamente ao `id` do `<clipPath>` no SVG.
+    *   Verifique se o `<clipPath>` está dentro de `<defs>` e o `<svg>` está presente no DOM antes do elemento clipado (ou acessível).
+    *   Erro de sintaxe no atributo `d` do path.
+*   **Recorte não responsivo:** Certifique-se que `clipPathUnits="objectBoundingBox"` está definido no `<clipPath>`.
+
+Ao seguir estas diretrizes, podemos criar e ajustar as formas complexas do `clipPath` de forma mais eficiente.
