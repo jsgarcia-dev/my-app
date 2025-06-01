@@ -1,16 +1,26 @@
 import type { Metadata } from 'next';
-import { Geist, Geist_Mono } from 'next/font/google';
+import { GeistSans } from 'geist/font/sans';
+import { GeistMono } from 'geist/font/mono';
+import { Gabarito } from 'next/font/google'; // Importando Gabarito do Google Fonts
 import './globals.css';
 
-const geistSans = Geist({
-  variable: '--font-geist-sans',
+const gabaritoFont = Gabarito({
   subsets: ['latin'],
+  variable: '--font-gabarito',
+  display: 'swap',
+  // Adicione pesos (weights) específicos se necessário, ex: weight: ['400', '700']
 });
 
-const geistMono = Geist_Mono({
-  variable: '--font-geist-mono',
-  subsets: ['latin'],
-});
+// As fontes Geist já exportam suas variáveis CSS diretamente
+// const geistSans = GeistSans({
+//   variable: '--font-geist-sans',
+//   subsets: ['latin'],
+// });
+
+// const geistMono = GeistMono({
+//   variable: '--font-geist-mono',
+//   subsets: ['latin'],
+// });
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -25,7 +35,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${GeistSans.variable} ${GeistMono.variable} ${gabaritoFont.variable} antialiased`}
       >
         {children}
       </body>
