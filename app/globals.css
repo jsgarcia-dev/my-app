@@ -8,6 +8,8 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  --font-playfair: var(--font-playfair);
+  --font-inter: var(--font-inter);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -118,5 +120,342 @@
   }
   body {
     @apply bg-background text-foreground;
+    scroll-behavior: smooth;
+  }
+  
+  /* Hide scrollbar */
+  * {
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE and Edge */
+  }
+  
+  *::-webkit-scrollbar {
+    display: none; /* Chrome, Safari and Opera */
+  }
+}
+
+@layer utilities {
+  /* Custom GSAP Animations */
+  .animate-fadeInLeft {
+    animation: fadeInLeft 1s ease-out 0.5s forwards;
+  }
+
+  .animate-fadeInRight {
+    animation: fadeInRight 1s ease-out 0.7s forwards;
+  }
+
+  .animate-fadeInUp {
+    animation: fadeInUp 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  .animate-slideInTitle {
+    animation: slideInTitle 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    opacity: 0;
+    transform: translateY(60px) scale(0.8);
+  }
+
+  .animate-fadeInDivider {
+    animation: fadeInDivider 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+    opacity: 0;
+    transform: scaleX(0);
+    transform-origin: center;
+  }
+
+  .animate-slideInDescription {
+    animation: slideInDescription 1s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+    opacity: 0;
+    transform: translateY(40px);
+    filter: blur(8px);
+  }
+
+  .text-stroke {
+    -webkit-text-stroke: 2px rgba(255, 255, 255, 0.1);
+    text-stroke: 2px rgba(255, 255, 255, 0.1);
+  }
+
+  .decorative-line {
+    height: 2px;
+    background: linear-gradient(90deg, #3b82f6, #60a5fa);
+    transform-origin: left center;
+  }
+
+  .gradient-shift {
+    background: linear-gradient(45deg, #3b82f6, #60a5fa, #3b82f6);
+    background-size: 200% 200%;
+  }
+
+  /* Scroll-triggered animations will override these */
+  .fade-in {
+    opacity: 0;
+    transform: translateY(50px);
+    transition: all 0.6s ease-out;
+  }
+
+  .service-card {
+    transform: translateY(60px) scale(0.9);
+    opacity: 0;
+  }
+
+  .room-card {
+    transform: translateX(-50px) rotateY(-15deg);
+    opacity: 0;
+  }
+
+  .room-card:nth-child(even) {
+    transform: translateX(50px) rotateY(15deg);
+  }
+
+  .section-title {
+    opacity: 0;
+    transform: translateX(-100px) skewY(5deg);
+  }
+
+  .cta-section {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+
+  /* Video container for parallax */
+  .video-container {
+    will-change: transform;
+  }
+
+  /* Smooth hover effects */
+  .hover-lift {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .hover-lift:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  }
+
+  /* Rooms parallax animations */
+  .animated-bg-image {
+    transition: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  /* Rooms Simple optimization */
+  .room-slide-simple {
+    position: relative;
+    will-change: clip-path;
+    transform: translate3d(0, 0, 0);
+    backface-visibility: hidden;
+  }
+  
+  .slide-bg {
+    will-change: transform;
+    backface-visibility: hidden;
+    transform: translate3d(0, 0, 0);
+  }
+  
+  .slide-content-wrapper {
+    will-change: transform, opacity;
+    backface-visibility: hidden;
+  }
+  
+  /* Ensure proper stacking */
+  #rooms-section {
+    position: relative;
+    isolation: isolate;
+  }
+  
+  /* Fix overflow issues */
+  .room-slide-simple .slide-bg {
+    position: absolute;
+    inset: 0;
+  }
+  
+  .room-image-wrapper {
+    will-change: transform, opacity, filter;
+    backface-visibility: hidden;
+    transform: translate3d(0, 0, 0);
+    overflow: hidden;
+  }
+  
+  .room-image {
+    will-change: transform, opacity;
+    backface-visibility: hidden;
+    transform: translate3d(0, 0, 0);
+  }
+  
+  .room-content {
+    will-change: transform, opacity;
+    backface-visibility: hidden;
+  }
+  
+  /* Reveal mask animation */
+  .reveal-mask {
+    will-change: transform;
+    backface-visibility: hidden;
+    transform: translate3d(0, 0, 0);
+    transform-origin: bottom center;
+  }
+  
+  /* Room features */
+  .room-feature {
+    will-change: transform, opacity;
+  }
+  
+  /* Ensure no gaps between sections */
+  #rooms-section {
+    margin-top: -1px;
+  }
+  
+  /* Progress indicator styles */
+  .fixed button[aria-label*="slide"] {
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+
+  
+  /* Smooth animation optimizations */
+  .slide-image-wrapper img {
+    transform: translate3d(0, 0, 0);
+    backface-visibility: hidden;
+  }
+  
+
+  /* Rooms section integration */
+  #rooms-section {
+    scroll-snap-type: y mandatory;
+    scroll-behavior: smooth;
+  }
+
+  /* Professional parallax container */
+  #rooms-section .sticky {
+    scroll-snap-align: start;
+  }
+
+
+
+
+
+  /* Smooth opacity transitions */
+  .opacity-transition {
+    transition: opacity 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  /* Custom parallax layer styling */
+  .parallax-layer {
+    will-change: transform;
+  }
+
+  /* Enhanced scroll behavior for rooms */
+  #rooms-container {
+    scroll-snap-type: y mandatory;
+    overflow-y: auto;
+  }
+
+  #rooms-container > div > div {
+    scroll-snap-align: start;
+  }
+
+  /* Smooth scroll momentum and performance optimizations */
+  @media (prefers-reduced-motion: no-preference) {
+    #rooms-container {
+      scroll-behavior: smooth;
+    }
+  }
+  
+  /* Parallax performance optimizations */
+  #rooms-section {
+    transform: translate3d(0, 0, 0);
+    backface-visibility: hidden;
+    perspective: 1000px;
+  }
+  
+  /* Force hardware acceleration for smooth animations */
+  .parallax-layer,
+  [class*="slide-"],
+  [class*="text-container"] {
+    transform: translate3d(0, 0, 0);
+    -webkit-transform: translate3d(0, 0, 0);
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+  }
+  
+}
+
+@keyframes fadeInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes fadeInRight {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInTitle {
+  0% {
+    opacity: 0;
+    transform: translateY(60px) scale(0.8);
+  }
+  60% {
+    opacity: 0.8;
+    transform: translateY(-10px) scale(1.02);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes fadeInDivider {
+  0% {
+    opacity: 0;
+    transform: scaleX(0);
+  }
+  60% {
+    opacity: 0.8;
+    transform: scaleX(1.1);
+  }
+  100% {
+    opacity: 1;
+    transform: scaleX(1);
+  }
+}
+
+@keyframes slideInDescription {
+  0% {
+    opacity: 0;
+    transform: translateY(40px);
+    filter: blur(8px);
+  }
+  70% {
+    opacity: 0.7;
+    transform: translateY(-5px);
+    filter: blur(2px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
   }
 }

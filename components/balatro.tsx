@@ -1,5 +1,6 @@
 import { Renderer, Program, Mesh, Triangle } from 'ogl';
 import { useEffect, useRef } from 'react';
+import { gsap } from 'gsap';
 
 interface BalatroProps {
   spinRotation?: number;
@@ -18,7 +19,7 @@ interface BalatroProps {
 }
 
 function hexToVec4(hex: string): [number, number, number, number] {
-  let hexStr = hex.replace('#', '');
+  const hexStr = hex.replace('#', '');
   let r = 0,
     g = 0,
     b = 0,
@@ -135,7 +136,9 @@ export default function Balatro({
   isRotate = false,
   mouseInteraction = true,
 }: BalatroProps) {
+  const wrapperRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+  const textRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (!containerRef.current) return;
@@ -144,23 +147,8 @@ export default function Balatro({
     const gl = renderer.gl;
     gl.clearColor(0, 0, 0, 1);
 
-    let program: Program;
-
-    function resize() {
-      renderer.setSize(container.offsetWidth, container.offsetHeight);
-      if (program) {
-        program.uniforms.iResolution.value = [
-          gl.canvas.width,
-          gl.canvas.height,
-          gl.canvas.width / gl.canvas.height,
-        ];
-      }
-    }
-    window.addEventListener('resize', resize);
-    resize();
-
     const geometry = new Triangle(gl);
-    program = new Program(gl, {
+    const program = new Program(gl, {
       vertex: vertexShader,
       fragment: fragmentShader,
       uniforms: {
@@ -187,6 +175,17 @@ export default function Balatro({
         uMouse: { value: [0.5, 0.5] },
       },
     });
+
+    function resize() {
+      renderer.setSize(container.offsetWidth, container.offsetHeight);
+      program.uniforms.iResolution.value = [
+        gl.canvas.width,
+        gl.canvas.height,
+        gl.canvas.width / gl.canvas.height,
+      ];
+    }
+    window.addEventListener('resize', resize);
+    resize();
 
     const mesh = new Mesh(gl, { geometry, program });
     let animationFrameId: number;
@@ -231,5 +230,56 @@ export default function Balatro({
     mouseInteraction,
   ]);
 
-  return <div ref={containerRef} className="h-full w-full" />;
+  useEffect(() => {
+    if (!wrapperRef.current) return;
+    
+    const tl = gsap.timeline({ delay: 0.3 });
+    
+    gsap.set(wrapperRef.current, {
+      opacity: 0,
+      filter: 'blur(20px)',
+      x: -window.innerWidth * 0.3
+    });
+    
+    gsap.set(textRef.current, {
+      opacity: 0,
+      y: 50
+    });
+    
+    tl.to(wrapperRef.current, {
+      opacity: 1,
+      filter: 'blur(0px)',
+      x: 0,
+      duration: 1.5,
+      ease: "power3.out"
+    })
+    .to(textRef.current, {
+      opacity: 1,
+      y: 0,
+      duration: 1,
+      ease: "power2.out"
+    }, "-=0.5");
+
+    return () => {
+      tl.kill();
+    };
+  }, []);
+
+  return (
+    <div ref={wrapperRef} className="relative w-full h-full opacity-0">
+      <div 
+        ref={containerRef} 
+        className="w-full h-full"
+      />
+      
+      <div 
+        ref={textRef}
+        className="absolute bottom-8 left-8 max-w-md text-white opacity-0 z-10"
+      >
+        <p className="text-lg leading-relaxed font-light bg-black/20 backdrop-blur-sm p-4 rounded-lg">
+          O espaço perfeito para seu negócio. Um complexo moderno com salas equipadas para profissionais de diversas áreas. Nutricionistas, psicólogos, lojas e muito mais em um único lugar.
+        </p>
+      </div>
+    </div>
+  );
 }

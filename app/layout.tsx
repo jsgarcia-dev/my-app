@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { GeistSans } from 'geist/font/sans';
 import { GeistMono } from 'geist/font/mono';
-import { Gabarito } from 'next/font/google'; // Importando Gabarito do Google Fonts
+import { Gabarito, Playfair_Display, Inter } from 'next/font/google'; // Importando Gabarito do Google Fonts
 import './globals.css';
 
 const gabaritoFont = Gabarito({
@@ -9,6 +9,20 @@ const gabaritoFont = Gabarito({
   variable: '--font-gabarito',
   display: 'swap',
   // Adicione pesos (weights) específicos se necessário, ex: weight: ['400', '700']
+});
+
+const playfairFont = Playfair_Display({
+  subsets: ['latin'],
+  variable: '--font-playfair',
+  display: 'swap',
+  weight: ['400', '500', '600', '700', '800', '900'],
+});
+
+const interFont = Inter({
+  subsets: ['latin'],
+  variable: '--font-inter',
+  display: 'swap',
+  weight: ['300', '400', '500', '600', '700'],
 });
 
 // As fontes Geist já exportam suas variáveis CSS diretamente
@@ -35,7 +49,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${GeistSans.variable} ${GeistMono.variable} ${gabaritoFont.variable} antialiased`}
+        className={`${GeistSans.variable} ${GeistMono.variable} ${gabaritoFont.variable} ${playfairFont.variable} ${interFont.variable} antialiased`}
       >
         {children}
       </body>
