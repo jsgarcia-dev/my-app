@@ -228,7 +228,7 @@ export default function FacilitiesSlider() {
               animationDelay: '0.1s',
             }}
           >
-            <h2 className="font-epilogue text-white/90 text-2xl font-medium tracking-wide md:text-3xl lg:text-4xl">
+            <h2 className="font-articulat text-white/90 text-2xl font-medium tracking-wide md:text-3xl lg:text-4xl">
               Nossas <span className="text-soft-pink">Instalações</span>
             </h2>
           </div>

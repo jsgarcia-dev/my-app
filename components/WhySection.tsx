@@ -214,10 +214,10 @@ export default function WhySection() {
         <div className="mb-16 text-center">
           <h2
             ref={titleRef}
-            className="font-epilogue text-charcoal mb-4 text-4xl font-bold lg:text-5xl tracking-tight"
+            className="font-articulat  mb-4 text-4xl lg:text-5xl font-bold tracking-tight"
           >
             Por Que Escolher o{' '}
-            <span className="text-rose-gold">Studio Garcia</span>?
+            <span className="text-charcoal font-bold">Studio Garcia</span>?
           </h2>
           <div className="bg-gradient-beauty mx-auto h-1 w-24 rounded-full" />
         </div>

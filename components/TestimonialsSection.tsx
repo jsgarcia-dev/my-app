@@ -151,7 +151,7 @@ export default function TestimonialsSection() {
             ref={titleRef}
             className="font-space-grotesk text-charcoal mb-4 text-4xl font-bold lg:text-5xl tracking-tight"
           >
-            Histórias de <span className="text-rose-gold">Transformação</span>
+            Histórias de <span className="text-charcoal font-bold">Transformação</span>
           </h2>
           <p className="text-charcoal/70 mx-auto max-w-2xl text-lg">
             Conheça alguns de nossos alunos que transformaram suas vidas através

@@ -239,7 +239,7 @@ export default function FacilitiesSection() {
         <div className="mb-12 text-center">
           <h2
             ref={titleRef}
-            className="font-epilogue text-charcoal mb-4 text-4xl font-bold lg:text-5xl tracking-tight"
+            className="font-articulat text-charcoal mb-4 text-4xl font-bold lg:text-5xl tracking-tight"
           >
             Nossas <span className="text-deep-purple">Instalações</span>
           </h2>

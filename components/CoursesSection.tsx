@@ -206,7 +206,7 @@ export default function CoursesSection() {
             ref={titleRef}
             className="font-outfit text-charcoal mb-4 text-4xl font-bold lg:text-5xl tracking-tight"
           >
-            Nossos <span className="text-deep-purple">Cursos</span>{' '}
+            Nossos <span className="text-charcoal font-bold">Cursos</span>{' '}
             Profissionalizantes
           </h2>
           <p className="text-charcoal/70 mx-auto max-w-2xl text-lg">
@@ -226,8 +226,8 @@ export default function CoursesSection() {
               onClick={() => setActiveCategory(category)}
               className={`rounded-full px-6 py-3 font-medium transition-all duration-300 ${
                 activeCategory === category
-                  ? 'bg-rose-gold scale-105 transform text-white shadow-lg'
-                  : 'text-charcoal hover:bg-rose-gold/10 hover:text-rose-gold bg-white'
+                  ? 'bg-[#2a9d8f] scale-105 transform text-white shadow-lg'
+                  : 'text-charcoal hover:bg-[#2a9d8f]/10 hover:text-[#2a9d8f] bg-white'
               }`}
             >
               {category}
@@ -273,7 +273,7 @@ export default function CoursesSection() {
                   {course.highlights.map((highlight, index) => (
                     <div key={index} className="flex items-center gap-2">
                       <svg
-                        className={`h-5 w-5 text-${course.color}`}
+                        className="h-5 w-5 text-[#2a9d8f]"
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"
@@ -309,7 +309,7 @@ export default function CoursesSection() {
                 </div>
 
                 <Button
-                  className={`mt-6 w-full bg-${course.color} hover:bg-${course.color}/90 font-semibold text-white`}
+                  className="mt-6 w-full bg-[#2a9d8f] hover:bg-[#2a9d8f]/90 font-semibold text-white"
                 >
                   Saiba Mais
                 </Button>
@@ -326,7 +326,7 @@ export default function CoursesSection() {
           <Button
             size="lg"
             variant="outline"
-            className="border-deep-purple text-deep-purple hover:bg-deep-purple hover:text-white"
+            className="border-[#2a9d8f] text-[#2a9d8f] hover:bg-[#2a9d8f] hover:text-white"
           >
             Ver Todos os Cursos
           </Button>

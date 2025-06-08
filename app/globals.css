@@ -137,6 +137,12 @@
     font-weight: 500; /* Articulat CF Regular */
   }
   
+  /* Default font for text elements */
+  p, span {
+    font-family: "articulat-cf", sans-serif;
+    font-weight: 500; /* Articulat CF Regular */
+  }
+  
   /* Hide scrollbar */
   * {
     scrollbar-width: none; /* Firefox */
@@ -452,6 +458,12 @@
   }
   
   .text-body {
+    font-family: "articulat-cf", sans-serif;
+    font-weight: 500; /* Regular */
+  }
+  
+  /* Default text styles */
+  .text-default {
     font-family: "articulat-cf", sans-serif;
     font-weight: 500; /* Regular */
   }
