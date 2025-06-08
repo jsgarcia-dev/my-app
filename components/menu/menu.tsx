@@ -204,7 +204,7 @@ export default function Menu() {
     <div className="h-full w-full" ref={container}>
       {/* Sobreposição do Menu Quadrada e Responsiva */}
       <div
-        className="menu-overlay fixed top-4 right-5 z-[190] aspect-square w-[calc(100vw-2rem)] rounded-2xl bg-black lg:top-8 lg:right-28 lg:aspect-auto lg:h-[500px] lg:w-[520px]"
+        className="menu-overlay fixed top-4 right-[5%] z-[190] aspect-square w-[calc(100vw-2rem)] rounded-2xl bg-black lg:top-8 lg:aspect-auto lg:h-[500px] lg:w-[520px]"
         style={{
           clipPath: 'polygon(100% 0, 100% 0, 100% 100%, 100% 100%)',
           pointerEvents: isMenuOpen ? 'auto' : 'none',
@@ -260,7 +260,7 @@ export default function Menu() {
       {/* Container do Ícone - posicionamento fixo com classes Tailwind */}
       <div
         ref={menuIconContainerRef}
-        className={`fixed top-8 right-4 z-[210] flex h-auto w-auto cursor-pointer items-center justify-center lg:top-8 lg:right-32`}
+        className={`fixed top-8 right-[5%] z-[210] flex h-auto w-auto cursor-pointer items-center justify-center`}
         onClick={toggleMenu}
       >
         <HamburgerIcon />
