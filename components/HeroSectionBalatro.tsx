@@ -68,6 +68,7 @@ export default function HeroSectionBalatro() {
     <section
       ref={sectionRef}
       className="relative flex min-h-screen items-center justify-center bg-white overflow-hidden"
+      data-menu-color="white"
     >
       {/* Balatro Background with inverted clip-path */}
       <BalatroBackground />

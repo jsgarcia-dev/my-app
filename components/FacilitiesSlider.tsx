@@ -51,9 +51,22 @@ const facilitiesData = [
 export default function FacilitiesSlider() {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
+  const [isInView, setIsInView] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const touchStartRef = useRef<number>(0);
   const lastScrollTimeRef = useRef<number>(0);
+  const currentSlideRef = useRef(currentSlide);
+  const isTransitioningRef = useRef(isTransitioning);
+  const hasSnappedRef = useRef(false);
+
+  // Update refs when state changes
+  useEffect(() => {
+    currentSlideRef.current = currentSlide;
+  }, [currentSlide]);
+
+  useEffect(() => {
+    isTransitioningRef.current = isTransitioning;
+  }, [isTransitioning]);
 
   const nextSlide = () => {
     if (isTransitioning) return;
@@ -84,18 +97,43 @@ export default function FacilitiesSlider() {
 
     // Handle wheel events
     const handleWheel = (e: WheelEvent) => {
-      e.preventDefault();
-      e.stopPropagation();
+      // Solo manejar el scroll si la sección está en vista
+      if (!isInView) return;
 
       const now = Date.now();
       if (now - lastScrollTimeRef.current < 1200) return; // Throttle scrolling
 
+      // Si estamos en el último slide y scrolleamos hacia abajo
+      if (currentSlideRef.current === facilitiesData.length - 1 && e.deltaY > 50) {
+        // Permitir el scroll normal para continuar a la siguiente sección
+        return;
+      }
+
+      // Si estamos en el primer slide y scrolleamos hacia arriba
+      if (currentSlideRef.current === 0 && e.deltaY < -50) {
+        // Permitir el scroll normal para volver a la sección anterior
+        return;
+      }
+
+      e.preventDefault();
+      e.stopPropagation();
+
       if (e.deltaY > 50) {
-        nextSlide();
-        lastScrollTimeRef.current = now;
+        if (!isTransitioningRef.current) {
+          setIsTransitioning(true);
+          setCurrentSlide((prev) => (prev + 1) % facilitiesData.length);
+          setTimeout(() => setIsTransitioning(false), 1000);
+          lastScrollTimeRef.current = now;
+        }
       } else if (e.deltaY < -50) {
-        prevSlide();
-        lastScrollTimeRef.current = now;
+        if (!isTransitioningRef.current) {
+          setIsTransitioning(true);
+          setCurrentSlide(
+            (prev) => (prev - 1 + facilitiesData.length) % facilitiesData.length
+          );
+          setTimeout(() => setIsTransitioning(false), 1000);
+          lastScrollTimeRef.current = now;
+        }
       }
     };
 
@@ -110,15 +148,37 @@ export default function FacilitiesSlider() {
 
       if (Math.abs(diff) > 50) {
         if (diff > 0) {
-          nextSlide();
+          // Si estamos en el último slide y deslizamos hacia arriba
+          if (currentSlideRef.current === facilitiesData.length - 1) {
+            // Permitir el scroll normal para continuar a la siguiente sección
+            return;
+          }
+          if (!isTransitioningRef.current) {
+            setIsTransitioning(true);
+            setCurrentSlide((prev) => (prev + 1) % facilitiesData.length);
+            setTimeout(() => setIsTransitioning(false), 1000);
+          }
         } else {
-          prevSlide();
+          if (!isTransitioningRef.current) {
+            setIsTransitioning(true);
+            setCurrentSlide(
+              (prev) => (prev - 1 + facilitiesData.length) % facilitiesData.length
+            );
+            setTimeout(() => setIsTransitioning(false), 1000);
+          }
         }
       }
     };
 
     // Prevent default scroll behavior
     const preventScroll = (e: Event) => {
+      // Solo prevenir scroll si la sección está en vista
+      if (!isInView) return;
+      
+      // Si estamos en el último slide, permitir scroll en dispositivos táctiles
+      if (currentSlideRef.current === facilitiesData.length - 1) {
+        return;
+      }
       e.preventDefault();
     };
 
@@ -136,24 +196,65 @@ export default function FacilitiesSlider() {
       container.removeEventListener('touchend', handleTouchEnd);
       container.removeEventListener('touchmove', preventScroll);
     };
-  }, [isTransitioning, nextSlide, prevSlide]);
+  }, [isInView]);
 
   // Auto-advance slides every 8 seconds
   useEffect(() => {
     const interval = setInterval(() => {
-      if (!isTransitioning) {
+      if (!isTransitioningRef.current && isInView) {
         nextSlide();
       }
     }, 8000);
 
     return () => clearInterval(interval);
-  }, [isTransitioning, nextSlide]);
+  }, [isInView]);
+
+  // Intersection Observer para detectar cuando la sección está en vista
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsInView(entry.isIntersecting);
+        
+        // Si la sección está entrando en vista desde arriba
+        if (entry.isIntersecting && !hasSnappedRef.current && entry.boundingClientRect.top < 100 && entry.boundingClientRect.top > -100) {
+          hasSnappedRef.current = true;
+          // Hacer scroll suave para centrar la sección
+          setTimeout(() => {
+            containerRef.current?.scrollIntoView({ 
+              behavior: 'smooth', 
+              block: 'start' 
+            });
+          }, 100);
+        }
+        
+        // Reset hasSnapped cuando salimos de la vista completamente
+        if (!entry.isIntersecting && entry.boundingClientRect.top < -window.innerHeight) {
+          hasSnappedRef.current = false;
+        }
+      },
+      {
+        threshold: [0, 0.1, 0.5, 0.9, 1],
+        rootMargin: '-10% 0px -10% 0px'
+      }
+    );
+
+    if (containerRef.current) {
+      observer.observe(containerRef.current);
+    }
+
+    return () => {
+      if (containerRef.current) {
+        observer.unobserve(containerRef.current);
+      }
+    };
+  }, []);
 
   return (
     <section
       ref={containerRef}
       id="facilities-slider"
       className="relative h-screen w-full overflow-hidden"
+      data-menu-color="white"
     >
       {/* Background Images */}
       {facilitiesData.map((facility, index) => {

@@ -29,7 +29,7 @@ export default function Home() {
       <FacilitiesSection />
 
       {/* CTA Section */}
-      <section className="from-rose-gold to-deep-purple relative overflow-hidden bg-gradient-to-br py-20">
+      <section className="from-rose-gold to-deep-purple relative overflow-hidden bg-gradient-to-br py-20" data-menu-color="white">
         <div className="relative z-10 mx-auto max-w-4xl px-8 text-center lg:px-12">
           <h2 className="font-playfair mb-6 text-4xl font-bold text-white">
             Pronto para transformar sua vida?
@@ -50,7 +50,7 @@ export default function Home() {
       </section>
 
       {/* Footer */}
-      <footer className="bg-charcoal py-12 text-white">
+      <footer className="bg-charcoal py-12 text-white" data-menu-color="white">
         <div className="mx-auto max-w-7xl px-8 lg:px-12">
           <div className="grid gap-8 md:grid-cols-4">
             <div>

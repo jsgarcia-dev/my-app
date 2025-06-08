@@ -192,6 +192,7 @@ export default function CoursesSection() {
     <section
       ref={sectionRef}
       className="bg-cream/30 relative overflow-hidden py-20 lg:py-32"
+      data-menu-color="black"
     >
       {/* Background decoration */}
       <div className="pointer-events-none absolute inset-0">

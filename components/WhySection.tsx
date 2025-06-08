@@ -202,6 +202,7 @@ export default function WhySection() {
     <section
       ref={sectionRef}
       className="relative overflow-hidden bg-white py-20 lg:py-32"
+      data-menu-color="black"
     >
       {/* Background decoration */}
       <div className="pointer-events-none absolute inset-0">

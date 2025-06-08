@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { gsap } from 'gsap';
 import { useGSAP } from '@gsap/react';
 import HamburgerIcon from './hamburger-icon';
+import { useAutoMenuColor } from '@/hooks/useAutoMenuColor';
 
 // Registrar o plugin GSAP necessário
 if (typeof window !== 'undefined') {
@@ -29,6 +30,7 @@ export default function Menu() {
   const tl = useRef<gsap.core.Timeline | null>(null);
   const iconTl = useRef<gsap.core.Timeline | null>(null);
   const isInitialized = useRef(false);
+  const menuColor = useAutoMenuColor();
 
   const toggleMenu = () => {
     if (!isInitialized.current) {
@@ -58,7 +60,6 @@ export default function Menu() {
     if (iconLines.length > 0) {
       gsap.set(iconLines, {
         transformOrigin: 'center center',
-        stroke: 'black',
       });
 
       const topLine = container.current.querySelector('.hamburger-icon .top');
@@ -260,10 +261,10 @@ export default function Menu() {
       {/* Container do Ícone - posicionamento fixo com classes Tailwind */}
       <div
         ref={menuIconContainerRef}
-        className={`fixed top-8 right-[5%] z-[210] flex h-auto w-auto cursor-pointer items-center justify-center`}
+        className={`fixed top-8 right-[5%] z-[210] flex h-auto w-auto cursor-pointer items-center justify-center transition-all duration-300`}
         onClick={toggleMenu}
       >
-        <HamburgerIcon />
+        <HamburgerIcon color={isMenuOpen ? 'white' : menuColor} />
       </div>
     </div>
   );
