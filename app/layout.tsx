@@ -12,6 +12,7 @@ import {
 } from 'next/font/google'; // Importando fontes do Google Fonts
 import './globals.css';
 import Menu from '@/components/menu/menu';
+import AdobeFonts from '@/components/AdobeFonts';
 
 const gabaritoFont = Gabarito({
   subsets: ['latin'],
@@ -75,6 +76,7 @@ const outfitFont = Outfit({
 // });
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://studiogarcia.com.br'),
   title:
     'Studio Garcia Beauty Academy - Transforme sua Paixão em Profissão | Itaquaquecetuba',
   description:
@@ -117,7 +119,11 @@ export const metadata: Metadata = {
       'max-snippet': -1,
     },
   },
-  viewport: 'width=device-width, initial-scale=1',
+};
+
+export const viewport = {
+  width: 'device-width',
+  initialScale: 1,
   themeColor: '#B76E79',
 };
 
@@ -129,8 +135,9 @@ export default function RootLayout({
   return (
     <html lang="pt-BR">
       <body
-        className={`${GeistSans.variable} ${GeistMono.variable} ${gabaritoFont.variable} ${playfairFont.variable} ${interFont.variable} ${montserratFont.variable} ${spaceGroteskFont.variable} ${epilogueFont.variable} ${outfitFont.variable} antialiased`}
+        className={`${GeistSans.variable} ${GeistMono.variable} ${gabaritoFont.variable} ${playfairFont.variable} ${interFont.variable} ${montserratFont.variable} ${spaceGroteskFont.variable} ${epilogueFont.variable} ${outfitFont.variable} font-articulat antialiased`}
       >
+        <AdobeFonts />
         <div className="relative z-40">
           <Menu />
         </div>

@@ -14,6 +14,7 @@
   --font-space-grotesk: var(--font-space-grotesk);
   --font-epilogue: var(--font-epilogue);
   --font-outfit: var(--font-outfit);
+  --font-articulat: "articulat-cf", sans-serif;
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -133,6 +134,7 @@
   body {
     @apply bg-background text-foreground;
     scroll-behavior: smooth;
+    font-weight: 500; /* Articulat CF Regular */
   }
   
   /* Hide scrollbar */
@@ -436,6 +438,22 @@
   
   .font-outfit {
     font-family: var(--font-outfit);
+  }
+  
+  /* Articulat CF font utilities */
+  .font-articulat {
+    font-family: "articulat-cf", sans-serif;
+  }
+  
+  /* Typography classes for Articulat CF */
+  .text-heading {
+    font-family: "articulat-cf", sans-serif;
+    font-weight: 800; /* Bold */
+  }
+  
+  .text-body {
+    font-family: "articulat-cf", sans-serif;
+    font-weight: 500; /* Regular */
   }
   
   /* Line clamp utility */

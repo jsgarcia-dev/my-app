@@ -114,9 +114,9 @@ export default function BalatroSection() {
         <Balatro
           spinRotation={-1.5}
           spinSpeed={6.0}
-          offset={[0.1, -0.1]}
+          
           color1="#00000" // rose-gold
-          color2="#0a9396" // deep-purple
+          color2="#2a9d8f" // deep-purple
           color3="#00000" // charcoal
           contrast={3.0}
           lighting={0.5}
