@@ -15,13 +15,14 @@ export default function ScrollAnimations({ children }: ScrollAnimationsProps) {
     // Configurações globais do ScrollTrigger
     ScrollTrigger.defaults({
       toggleActions: 'play none none reverse',
-      markers: false
+      markers: false,
     });
 
     // Animação de linha decorativa
     const decorativeLines = gsap.utils.toArray('.decorative-line');
     decorativeLines.forEach((line: any) => {
-      gsap.fromTo(line,
+      gsap.fromTo(
+        line,
         { scaleX: 0, transformOrigin: 'left center' },
         {
           scaleX: 1,
@@ -29,8 +30,8 @@ export default function ScrollAnimations({ children }: ScrollAnimationsProps) {
           ease: 'power3.inOut',
           scrollTrigger: {
             trigger: line,
-            start: 'top 80%'
-          }
+            start: 'top 80%',
+          },
         }
       );
     });
@@ -38,10 +39,11 @@ export default function ScrollAnimations({ children }: ScrollAnimationsProps) {
     // Animação de blur progressivo
     const blurElements = gsap.utils.toArray('.blur-in');
     blurElements.forEach((element: any) => {
-      gsap.fromTo(element,
+      gsap.fromTo(
+        element,
         {
           filter: 'blur(10px)',
-          opacity: 0
+          opacity: 0,
         },
         {
           filter: 'blur(0px)',
@@ -50,8 +52,8 @@ export default function ScrollAnimations({ children }: ScrollAnimationsProps) {
           ease: 'power2.out',
           scrollTrigger: {
             trigger: element,
-            start: 'top 75%'
-          }
+            start: 'top 75%',
+          },
         }
       );
     });
@@ -60,11 +62,12 @@ export default function ScrollAnimations({ children }: ScrollAnimationsProps) {
     const flipCards = gsap.utils.toArray('.flip-card');
     flipCards.forEach((card: any) => {
       gsap.set(card, { transformPerspective: 1000 });
-      gsap.fromTo(card,
+      gsap.fromTo(
+        card,
         {
           rotateX: -90,
           opacity: 0,
-          transformOrigin: 'center bottom'
+          transformOrigin: 'center bottom',
         },
         {
           rotateX: 0,
@@ -73,8 +76,8 @@ export default function ScrollAnimations({ children }: ScrollAnimationsProps) {
           ease: 'back.out(1.7)',
           scrollTrigger: {
             trigger: card,
-            start: 'top 80%'
-          }
+            start: 'top 80%',
+          },
         }
       );
     });
@@ -84,32 +87,37 @@ export default function ScrollAnimations({ children }: ScrollAnimationsProps) {
     typewriterElements.forEach((element: any) => {
       const text = element.textContent;
       element.textContent = '';
-      
+
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: element,
           start: 'top 80%',
-          once: true
-        }
+          once: true,
+        },
       });
 
       text.split('').forEach((char: string, index: number) => {
-        tl.to(element, {
-          duration: 0.05,
-          onComplete: function() {
-            element.textContent += char;
-          }
-        }, index * 0.05);
+        tl.to(
+          element,
+          {
+            duration: 0.05,
+            onComplete: function () {
+              element.textContent += char;
+            },
+          },
+          index * 0.05
+        );
       });
     });
 
     // Animação de escala com bounce
     const bounceElements = gsap.utils.toArray('.bounce-in');
     bounceElements.forEach((element: any, index: number) => {
-      gsap.fromTo(element,
+      gsap.fromTo(
+        element,
         {
           scale: 0,
-          opacity: 0
+          opacity: 0,
         },
         {
           scale: 1,
@@ -119,8 +127,8 @@ export default function ScrollAnimations({ children }: ScrollAnimationsProps) {
           ease: 'back.out(2.5)',
           scrollTrigger: {
             trigger: element,
-            start: 'top 80%'
-          }
+            start: 'top 80%',
+          },
         }
       );
     });
@@ -133,13 +141,13 @@ export default function ScrollAnimations({ children }: ScrollAnimationsProps) {
         duration: 3,
         ease: 'none',
         repeat: -1,
-        yoyo: true
+        yoyo: true,
       });
     });
 
     // Cleanup
     return () => {
-      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+      ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
     };
   }, []);
 

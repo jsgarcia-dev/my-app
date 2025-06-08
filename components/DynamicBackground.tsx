@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useRef } from 'react';
+import React, { useRef } from 'react';
 // Importaremos o GSAP quando formos adicionar as animações
 // import gsap from 'gsap';
 

@@ -25,7 +25,7 @@ export function useScrollAnimation<T extends HTMLElement = HTMLDivElement>(
     start = 'top 80%',
     end = 'bottom 20%',
     scrub = false,
-    pin = false
+    pin = false,
   } = options;
 
   useEffect(() => {
@@ -62,7 +62,7 @@ export function useScrollAnimation<T extends HTMLElement = HTMLDivElement>(
       end,
       toggleActions: scrub ? undefined : 'play none none reverse',
       scrub,
-      pin
+      pin,
     };
 
     gsap.to(element, {
@@ -70,7 +70,7 @@ export function useScrollAnimation<T extends HTMLElement = HTMLDivElement>(
       duration,
       delay,
       ease: 'power3.out',
-      scrollTrigger: scrollTriggerConfig
+      scrollTrigger: scrollTriggerConfig,
     });
 
     return () => {

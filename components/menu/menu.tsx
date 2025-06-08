@@ -12,9 +12,11 @@ if (typeof window !== 'undefined') {
 }
 
 const menuLinks = [
-  { path: '/', label: 'HOME' },
-  { path: '/works', label: 'PARCEIROS' },
-  { path: '/about', label: 'AMBIENTES' },
+  { path: '/', label: 'INÍCIO' },
+  { path: '#cursos', label: 'CURSOS' },
+  { path: '#sobre', label: 'SOBRE' },
+  { path: '#depoimentos', label: 'DEPOIMENTOS' },
+  { path: '#contato', label: 'CONTATO' },
 ];
 
 // Breakpoint similar ao 'lg' do Tailwind (1024px)

@@ -3,40 +3,52 @@
 import React, { useRef, useEffect, useState } from 'react';
 import Image from 'next/image';
 
-const slidesData = [
+const facilitiesData = [
   {
-    id: 'section-spaces-1',
-    tag: 'Sala Executiva',
-    description: 'Espaço de 30m² ideal para consultórios e escritórios',
+    id: 'facility-1',
+    title: 'Sala de Corte e Coloração',
+    description: 'Equipada com cadeiras profissionais, lavatórios modernos e todos os produtos necessários para aprender as melhores técnicas de cabelo.',
     image: '/rooms/room-1.jpg',
+    features: ['8 Estações de trabalho', 'Lavatórios profissionais', 'Iluminação LED', 'Climatização']
   },
   {
-    id: 'section-spaces-2',
-    tag: 'Sala Comercial',
-    description: 'Perfeita para pequenos comércios e lojas',
+    id: 'facility-2',
+    title: 'Estúdio de Maquiagem',
+    description: 'Ambiente com iluminação perfeita e espelhos Hollywood para o aprendizado de maquiagem profissional e visagismo.',
     image: '/rooms/room-2.jpg',
+    features: ['Iluminação Hollywood', 'Cadeiras giratórias', 'Kit completo de produtos', 'Espelhos HD']
   },
   {
-    id: 'section-spaces-3',
-    tag: 'Sala Premium',
-    description: 'Espaço amplo para clínicas e serviços especializados',
+    id: 'facility-3',
+    title: 'Laboratório de Estética',
+    description: 'Macas profissionais e equipamentos de última geração para tratamentos faciais e corporais avançados.',
     image: '/rooms/room-3.jpg',
+    features: ['Macas elétricas', 'Vapor de ozônio', 'Alta frequência', 'Produtos profissionais']
   },
   {
-    id: 'section-spaces-4',
-    tag: 'Sala Compacta',
-    description: 'Ideal para profissionais autônomos e startups',
+    id: 'facility-4',
+    title: 'Sala de Nail Design',
+    description: 'Espaço dedicado ao aprendizado de manicure, pedicure e nail art com toda estrutura necessária para a prática.',
     image: '/rooms/room-1.jpg',
+    features: ['Mesas ergonômicas', 'Aspiradores de pó', 'Cabine UV', 'Esterilizadores']
   },
   {
-    id: 'section-spaces-5',
-    tag: 'Sala Dupla',
-    description: 'Dois ambientes integrados para maior versatilidade',
+    id: 'facility-5',
+    title: 'Auditório Multimídia',
+    description: 'Espaço para aulas teóricas com projeção em alta definição e sistema de som profissional para apresentações.',
     image: '/rooms/room-2.jpg',
+    features: ['Capacidade 40 pessoas', 'Projetor 4K', 'Sistema de som', 'Ar condicionado']
+  },
+  {
+    id: 'facility-6',
+    title: 'Salão Escola',
+    description: 'Ambiente real de salão onde alunos atendem clientes supervisionados por professores experientes.',
+    image: '/rooms/room-3.jpg',
+    features: ['Atendimento real', 'Supervisão docente', 'Ambiente profissional', 'Experiência prática']
   },
 ];
 
-export default function Rooms() {
+export default function FacilitiesSlider() {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -46,7 +58,7 @@ export default function Rooms() {
   const nextSlide = () => {
     if (isTransitioning) return;
     setIsTransitioning(true);
-    setCurrentSlide((prev) => (prev + 1) % slidesData.length);
+    setCurrentSlide((prev) => (prev + 1) % facilitiesData.length);
     setTimeout(() => setIsTransitioning(false), 1000);
   };
 
@@ -54,7 +66,7 @@ export default function Rooms() {
     if (isTransitioning) return;
     setIsTransitioning(true);
     setCurrentSlide(
-      (prev) => (prev - 1 + slidesData.length) % slidesData.length
+      (prev) => (prev - 1 + facilitiesData.length) % facilitiesData.length
     );
     setTimeout(() => setIsTransitioning(false), 1000);
   };
@@ -124,23 +136,34 @@ export default function Rooms() {
       container.removeEventListener('touchend', handleTouchEnd);
       container.removeEventListener('touchmove', preventScroll);
     };
-  }, [isTransitioning]);
+  }, [isTransitioning, nextSlide, prevSlide]);
+
+  // Auto-advance slides every 8 seconds
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (!isTransitioning) {
+        nextSlide();
+      }
+    }, 8000);
+
+    return () => clearInterval(interval);
+  }, [isTransitioning, nextSlide]);
 
   return (
     <section
       ref={containerRef}
-      id="rooms-section"
+      id="facilities-slider"
       className="relative h-screen w-full overflow-hidden"
     >
       {/* Background Images */}
-      {slidesData.map((slide, index) => {
+      {facilitiesData.map((facility, index) => {
         const isActive = index === currentSlide;
         const isPrev =
           index === currentSlide - 1 ||
-          (currentSlide === 0 && index === slidesData.length - 1);
+          (currentSlide === 0 && index === facilitiesData.length - 1);
         const isNext =
           index === currentSlide + 1 ||
-          (currentSlide === slidesData.length - 1 && index === 0);
+          (currentSlide === facilitiesData.length - 1 && index === 0);
 
         let transformClass = '';
         let opacityClass = '';
@@ -166,15 +189,15 @@ export default function Rooms() {
 
         return (
           <div
-            key={slide.id}
+            key={facility.id}
             className={`absolute inset-0 transition-all duration-1000 ease-in-out ${transformClass} ${opacityClass}`}
             style={{
               zIndex: zIndexValue,
             }}
           >
             <Image
-              src={slide.image}
-              alt={`${slide.tag} background`}
+              src={facility.image}
+              alt={`${facility.title} background`}
               fill
               style={{
                 objectFit: 'cover',
@@ -186,8 +209,8 @@ export default function Rooms() {
             <div
               className={`absolute inset-0 transition-all duration-1000 ${
                 isActive
-                  ? 'bg-gradient-to-b from-black/30 via-black/50 to-black/80'
-                  : 'bg-gradient-to-b from-black/60 via-black/70 to-black/90'
+                  ? 'bg-gradient-to-b from-rose-gold/20 via-deep-purple/40 to-charcoal/80'
+                  : 'bg-gradient-to-b from-rose-gold/40 via-deep-purple/60 to-charcoal/90'
               }`}
             />
           </div>
@@ -197,28 +220,46 @@ export default function Rooms() {
       {/* Content */}
       <div className="relative z-20 flex h-full flex-col items-center justify-center px-8 text-center text-white">
         <div className="max-w-4xl">
+          {/* Section Title */}
+          <div
+            key={`section-title-${currentSlide}`}
+            className="animate-slideInTitle mb-4"
+            style={{
+              animationDelay: '0.1s',
+            }}
+          >
+            <h2 className="font-epilogue text-white/90 text-2xl font-medium tracking-wide md:text-3xl lg:text-4xl">
+              Nossas <span className="text-soft-pink">Instalações</span>
+            </h2>
+          </div>
+
+          {/* Facility Title */}
           <h1
             key={`title-${currentSlide}`}
-            className="animate-slideInTitle text-stroke mb-6 font-[family-name:var(--font-playfair)] text-4xl leading-none font-bold tracking-tight md:text-6xl lg:text-7xl xl:text-8xl"
+            className="animate-slideInTitle text-stroke mb-6 font-space-grotesk text-4xl leading-none font-bold tracking-tight md:text-6xl lg:text-7xl xl:text-8xl"
             style={{
               textShadow:
                 '0 4px 30px rgba(0,0,0,0.9), 0 8px 60px rgba(0,0,0,0.7), 0 0 100px rgba(255,255,255,0.1)',
-              animationDelay: '0.2s',
+              animationDelay: '0.3s',
             }}
           >
-            {slidesData[currentSlide].tag}
+            {facilitiesData[currentSlide].title}
           </h1>
+
+          {/* Divider */}
           <div
             key={`divider-${currentSlide}`}
-            className="animate-fadeInDivider mx-auto mb-8 h-1 w-32 bg-gradient-to-r from-transparent via-white to-transparent"
+            className="animate-fadeInDivider mx-auto mb-8 h-1 w-32 bg-gradient-to-r from-transparent via-rose-gold to-transparent"
             style={{
               animationDelay: '0.8s',
-              boxShadow: '0 0 20px rgba(255,255,255,0.5)',
+              boxShadow: '0 0 20px rgba(183, 110, 121, 0.5)',
             }}
           ></div>
+
+          {/* Description */}
           <p
             key={`description-${currentSlide}`}
-            className="animate-slideInDescription mx-auto max-w-2xl font-[family-name:var(--font-inter)] text-lg leading-relaxed font-light md:text-xl lg:text-2xl"
+            className="animate-slideInDescription mx-auto max-w-2xl font-montserrat text-lg leading-relaxed font-light md:text-xl lg:text-2xl"
             style={{
               animationDelay: '1.2s',
               textShadow:
@@ -226,27 +267,48 @@ export default function Rooms() {
               letterSpacing: '0.5px',
             }}
           >
-            {slidesData[currentSlide].description}
+            {facilitiesData[currentSlide].description}
           </p>
+
+          {/* Features */}
+          <div
+            key={`features-${currentSlide}`}
+            className="animate-slideInDescription mt-8 flex flex-wrap justify-center gap-4"
+            style={{
+              animationDelay: '1.6s',
+            }}
+          >
+            {facilitiesData[currentSlide].features.map((feature, index) => (
+              <div
+                key={index}
+                className="rounded-full bg-white/10 backdrop-blur-sm px-4 py-2 text-sm font-medium"
+                style={{
+                  animationDelay: `${1.8 + index * 0.1}s`,
+                }}
+              >
+                {feature}
+              </div>
+            ))}
+          </div>
         </div>
 
-        {/* Navigation */}
+        {/* Navigation Dots */}
         <div
           className="animate-fadeInUp absolute top-1/2 right-8 -translate-y-1/2 transform text-center"
-          style={{ animationDelay: '1.6s' }}
+          style={{ animationDelay: '2s' }}
         >
           <div className="flex flex-col space-y-3">
-            {slidesData.map((_, index) => (
+            {facilitiesData.map((_, index) => (
               <button
                 key={index}
                 onClick={() => goToSlide(index)}
                 className={`h-3 w-3 rounded-full backdrop-blur-sm transition-all duration-500 ${
                   index === currentSlide
-                    ? 'scale-125 bg-white shadow-lg shadow-white/30'
-                    : 'bg-white/40 hover:scale-110 hover:bg-white/70'
+                    ? 'scale-125 bg-rose-gold shadow-lg shadow-rose-gold/30'
+                    : 'bg-white/40 hover:scale-110 hover:bg-rose-gold/70'
                 }`}
                 style={{
-                  animationDelay: `${1.8 + index * 0.1}s`,
+                  animationDelay: `${2.2 + index * 0.1}s`,
                 }}
               />
             ))}
@@ -256,10 +318,10 @@ export default function Rooms() {
         {/* Scroll hint */}
         <div
           className="animate-fadeInUp absolute bottom-24 left-1/2 -translate-x-1/2 transform text-center"
-          style={{ animationDelay: '2s' }}
+          style={{ animationDelay: '2.4s' }}
         >
-          <p className="mb-2 font-[family-name:var(--font-inter)] text-sm font-medium tracking-wide text-white/80">
-            Role para explorar os espaços
+          <p className="mb-2 font-montserrat text-sm font-medium tracking-wide text-white/80">
+            Role para explorar as instalações
           </p>
           <div className="flex justify-center">
             <svg
@@ -281,8 +343,8 @@ export default function Rooms() {
         {/* Arrow Navigation */}
         <button
           onClick={prevSlide}
-          className="animate-fadeInUp absolute top-8 left-1/2 -translate-x-1/2 transform rounded-full p-2 text-white/70 backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:scale-110 hover:text-white"
-          style={{ animationDelay: '1.4s' }}
+          className="animate-fadeInUp absolute top-8 left-1/2 -translate-x-1/2 transform rounded-full bg-rose-gold/20 backdrop-blur-sm p-3 text-white/70 transition-all duration-300 hover:-translate-y-1 hover:scale-110 hover:bg-rose-gold/30 hover:text-white"
+          style={{ animationDelay: '1.8s' }}
         >
           <svg
             className="h-6 w-6"
@@ -301,8 +363,8 @@ export default function Rooms() {
 
         <button
           onClick={nextSlide}
-          className="animate-fadeInUp absolute bottom-8 left-1/2 -translate-x-1/2 transform rounded-full p-2 text-white/70 backdrop-blur-sm transition-all duration-300 hover:translate-y-1 hover:scale-110 hover:text-white"
-          style={{ animationDelay: '1.4s' }}
+          className="animate-fadeInUp absolute bottom-8 left-1/2 -translate-x-1/2 transform rounded-full bg-rose-gold/20 backdrop-blur-sm p-3 text-white/70 transition-all duration-300 hover:translate-y-1 hover:scale-110 hover:bg-rose-gold/30 hover:text-white"
+          style={{ animationDelay: '1.8s' }}
         >
           <svg
             className="h-6 w-6"
@@ -318,6 +380,19 @@ export default function Rooms() {
             />
           </svg>
         </button>
+
+        {/* Counter */}
+        <div
+          className="animate-fadeInUp absolute top-8 right-8 rounded-2xl bg-white/10 backdrop-blur-sm p-4 text-center"
+          style={{ animationDelay: '2s' }}
+        >
+          <p className="text-rose-gold text-2xl font-bold">
+            {(currentSlide + 1).toString().padStart(2, '0')}
+          </p>
+          <p className="text-white/70 text-sm">
+            de {facilitiesData.length.toString().padStart(2, '0')}
+          </p>
+        </div>
       </div>
     </section>
   );

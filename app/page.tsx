@@ -1,493 +1,101 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
-import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import Balatro from '@/components/balatro';
-import Menu from '@/components/menu/menu';
-import AnimatedText from '@/components/AnimatedText';
-import Rooms from '@/components/rooms';
-
-gsap.registerPlugin(ScrollTrigger);
+import HeroSectionBalatro from '@/components/HeroSectionBalatro';
+import WhySection from '@/components/WhySection';
+import CoursesSection from '@/components/CoursesSection';
+import TestimonialsSection from '@/components/TestimonialsSection';
+import FacilitiesSection from '@/components/FacilitiesSection';
+import WhatsAppButton from '@/components/WhatsAppButton';
 
 export default function Home() {
-  const mainRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const ctx = gsap.context(() => {
-      // Animação fadeIn para elementos gerais
-      gsap.utils.toArray('.fade-in').forEach((element: any) => {
-        gsap.fromTo(
-          element,
-          {
-            opacity: 0,
-            y: 50,
-          },
-          {
-            opacity: 1,
-            y: 0,
-            duration: 1,
-            ease: 'power3.out',
-            scrollTrigger: {
-              trigger: element,
-              start: 'top 80%',
-              end: 'bottom 20%',
-              toggleActions: 'play none none reverse',
-            },
-          }
-        );
-      });
-
-      // Animação para os stats numbers
-      gsap.utils.toArray('.stat-number').forEach((element: any) => {
-        const endValue = parseInt(element.textContent);
-        const obj = { value: 0 };
-
-        gsap.to(obj, {
-          value: endValue,
-          duration: 2,
-          ease: 'power2.out',
-          scrollTrigger: {
-            trigger: element,
-            start: 'top 80%',
-            once: true,
-          },
-          onUpdate: () => {
-            element.textContent = Math.round(obj.value) + '+';
-          },
-        });
-      });
-
-      // Animação stagger para cards
-      gsap.utils
-        .toArray('.service-card')
-        .forEach((card: any, index: number) => {
-          gsap.fromTo(
-            card,
-            {
-              opacity: 0,
-              y: 60,
-              scale: 0.9,
-            },
-            {
-              opacity: 1,
-              y: 0,
-              scale: 1,
-              duration: 0.8,
-              delay: index * 0.1,
-              ease: 'power3.out',
-              scrollTrigger: {
-                trigger: card,
-                start: 'top 85%',
-                end: 'bottom 15%',
-                toggleActions: 'play none none reverse',
-              },
-            }
-          );
-        });
-
-      // Animação para as salas disponíveis
-      gsap.utils.toArray('.room-card').forEach((card: any, index: number) => {
-        gsap.fromTo(
-          card,
-          {
-            opacity: 0,
-            x: index % 2 === 0 ? -50 : 50,
-            rotateY: index % 2 === 0 ? -15 : 15,
-          },
-          {
-            opacity: 1,
-            x: 0,
-            rotateY: 0,
-            duration: 1,
-            delay: index * 0.15,
-            ease: 'power3.out',
-            scrollTrigger: {
-              trigger: card,
-              start: 'top 80%',
-              end: 'bottom 20%',
-              toggleActions: 'play none none reverse',
-            },
-          }
-        );
-      });
-
-      // Parallax effect para o vídeo
-      const videoSection = document.querySelector('.video-container');
-      if (videoSection) {
-        gsap.to(videoSection, {
-          yPercent: -20,
-          ease: 'none',
-          scrollTrigger: {
-            trigger: videoSection,
-            start: 'top bottom',
-            end: 'bottom top',
-            scrub: true,
-          },
-        });
-      }
-
-      // Animação de reveal para títulos
-      gsap.utils.toArray('.section-title').forEach((title: any) => {
-        gsap.fromTo(
-          title,
-          {
-            opacity: 0,
-            x: -100,
-            skewY: 5,
-          },
-          {
-            opacity: 1,
-            x: 0,
-            skewY: 0,
-            duration: 1.2,
-            ease: 'power4.out',
-            scrollTrigger: {
-              trigger: title,
-              start: 'top 80%',
-              end: 'bottom 20%',
-              toggleActions: 'play none none reverse',
-            },
-          }
-        );
-      });
-
-      // Animação para o CTA section
-      const ctaSection = document.querySelector('.cta-section');
-      if (ctaSection) {
-        gsap.fromTo(
-          ctaSection,
-          {
-            scale: 0.9,
-            opacity: 0,
-          },
-          {
-            scale: 1,
-            opacity: 1,
-            duration: 1,
-            ease: 'power3.out',
-            scrollTrigger: {
-              trigger: ctaSection,
-              start: 'top 70%',
-              end: 'bottom 30%',
-              toggleActions: 'play none none reverse',
-            },
-          }
-        );
-      }
-    }, mainRef);
-
-    return () => ctx.revert();
-  }, []);
-
   return (
-    <div ref={mainRef} className="relative min-h-screen w-full bg-gray-50">
-      {/* Hero Section */}
-      <section className="relative min-h-screen w-full overflow-hidden">
-        {/* Balatro ocupando toda a largura */}
-        <div className="absolute inset-0">
-          <Balatro
-            color1="#1e293b"
-            color2="#3b82f6"
-            color3="#60a5fa"
-            isRotate={true}
-            mouseInteraction={true}
-            pixelFilter={1200}
-            spinSpeed={1.5}
-            contrast={2.5}
-            lighting={0.6}
-            spinAmount={0.2}
-          />
-        </div>
+    <div className="relative min-h-screen w-full overflow-x-hidden">
+      {/* WhatsApp Button */}
+      <WhatsAppButton />
 
-        {/* Overlay para conteúdo */}
-        <div className="relative z-10 flex min-h-screen">
-          {/* Seção de conteúdo */}
-          <div className="relative flex flex-1 flex-col">
-            {/* Background com curva para o menu */}
-            <div 
-              className="absolute top-0 right-0 h-32 bg-gray-50/95 backdrop-blur-sm"
-              style={{
-                width: '60%',
-                clipPath: 'polygon(20% 0%, 100% 0%, 100% 100%, 0% 100%)'
-              }}
-            />
-            
-            {/* Background com curva para o texto inferior */}
-            <div 
-              className="absolute bottom-0 left-0 bg-gray-50/95 backdrop-blur-sm"
-              style={{
-                width: '70%',
-                height: '60%',
-                clipPath: 'polygon(0% 40%, 80% 0%, 100% 100%, 0% 100%)'
-              }}
-            />
-            <header className="relative z-20 flex items-center justify-between px-8 py-6 lg:px-12">
-              <div className="animate-fadeInLeft flex items-center space-x-3 opacity-0">
-                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-blue-600 to-blue-700 text-white shadow-lg">
-                  <span className="text-xl font-bold">SG</span>
-                </div>
-                <span className="text-2xl font-semibold text-gray-900">
-                  Studio Garcia
-                </span>
-              </div>
-              <div className="animate-fadeInRight opacity-0">
-                <Menu />
-              </div>
-            </header>
+      {/* Hero Section with Balatro */}
+      <HeroSectionBalatro />
 
-            <div className="flex flex-1 items-center px-8 py-12 lg:px-12">
-              <div className="max-w-xl">
-                <AnimatedText
-                  text="O espaço perfeito para o seu negócio"
-                  className="mb-6 text-5xl leading-tight font-bold text-gray-900 lg:text-6xl"
-                  animation="fadeInUp"
-                  delay={0.1}
-                />
-                <p
-                  className="fade-in mb-8 text-lg text-gray-600"
-                  style={{ transitionDelay: '0.2s' }}
-                >
-                  Um complexo moderno com salas equipadas para profissionais de
-                  diversas áreas. Nutricionistas, psicólogos, lojas e muito mais
-                  em um único lugar.
-                </p>
-                <div
-                  className="fade-in flex flex-wrap gap-4"
-                  style={{ transitionDelay: '0.3s' }}
-                >
-                  <button className="rounded-lg bg-blue-600 px-6 py-3 font-medium text-white transition-all hover:scale-105 hover:bg-blue-700 hover:shadow-lg">
-                    Conhecer Espaços
-                  </button>
-                  <button className="rounded-lg border-2 border-gray-300 px-6 py-3 font-medium text-gray-700 transition-all hover:scale-105 hover:border-gray-400 hover:bg-gray-100">
-                    Falar com Consultor
-                  </button>
-                </div>
+      {/* Why Section */}
+      <WhySection />
 
-                {/* Stats */}
-                <div className="fade-in mt-12 grid grid-cols-3 gap-8">
-                  <div className="text-center">
-                    <p className="stat-number text-3xl font-bold text-blue-600">
-                      15
-                    </p>
-                    <p className="text-sm text-gray-600">Salas Disponíveis</p>
-                  </div>
-                  <div className="text-center">
-                    <p className="stat-number text-3xl font-bold text-blue-600">
-                      20
-                    </p>
-                    <p className="text-sm text-gray-600">
-                      Profissionais Ativos
-                    </p>
-                  </div>
-                  <div className="text-center">
-                    <p className="text-3xl font-bold text-blue-600">5★</p>
-                    <p className="text-sm text-gray-600">Avaliação</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* Courses Section */}
+      <CoursesSection />
 
-      {/* Sobre o Studio */}
-      <section className="relative bg-white py-20">
-        <div className="mx-auto max-w-7xl px-8 lg:px-12">
-          <div className="grid gap-12 lg:grid-cols-2 lg:gap-20">
-            <div>
-              <h2 className="section-title mb-6 text-4xl font-bold text-gray-900">
-                Um espaço pensado para o sucesso do seu negócio
-              </h2>
-              <p className="fade-in mb-6 text-lg text-gray-600">
-                O Studio Garcia é um complexo comercial moderno que oferece
-                infraestrutura completa para profissionais de diversas áreas.
-                Localizado em região privilegiada, nosso espaço conta com:
-              </p>
-              <ul className="fade-in space-y-3">
-                {[
-                  'Salas climatizadas e mobiliadas',
-                  'Recepção e área de espera compartilhada',
-                  'Estacionamento privativo',
-                  'Segurança 24 horas',
-                  'Internet de alta velocidade',
-                  'Salas de reunião disponíveis',
-                ].map((item, index) => (
-                  <li key={index} className="flex items-center">
-                    <svg
-                      className="mr-3 h-5 w-5 text-blue-600"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M5 13l4 4L19 7"
-                      />
-                    </svg>
-                    <span className="text-gray-700">{item}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <div className="relative">
-              <div className="video-container aspect-video overflow-hidden rounded-2xl bg-gray-200">
-                <video
-                  autoPlay
-                  muted
-                  loop
-                  playsInline
-                  className="h-full w-full object-cover"
-                  src="/salao.mp4"
-                />
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* Testimonials Section */}
+      <TestimonialsSection />
 
-      {/* Profissionais Atuais */}
-      <section className="relative bg-gray-50 py-20">
-        <div className="mx-auto max-w-7xl px-8 lg:px-12">
-          <div className="mb-12 text-center">
-            <h2 className="section-title mb-4 text-4xl font-bold text-gray-900">
-              Profissionais e Serviços Disponíveis
-            </h2>
-            <p className="fade-in mx-auto max-w-2xl text-lg text-gray-600">
-              Conheça alguns dos profissionais que já fazem parte do Studio
-              Garcia
-            </p>
-          </div>
-
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-            {[
-              {
-                title: 'Nutricionista',
-                professional: 'Dra. Ana Silva',
-                description:
-                  'Especialista em nutrição esportiva e emagrecimento',
-                icon: '🥗',
-              },
-              {
-                title: 'Psicóloga',
-                professional: 'Dra. Maria Santos',
-                description: 'Terapia cognitivo-comportamental',
-                icon: '🧠',
-              },
-              {
-                title: 'Loja de Bijuterias',
-                professional: 'Bella Acessórios',
-                description: 'Peças exclusivas e personalizadas',
-                icon: '💎',
-              },
-              {
-                title: 'Boutique',
-                professional: 'Elegance Store',
-                description: 'Moda feminina contemporânea',
-                icon: '👗',
-              },
-            ].map((service, index) => (
-              <div
-                key={index}
-                className="service-card hover-lift group rounded-2xl bg-white p-6 shadow-sm transition-all hover:shadow-xl"
-              >
-                <div className="mb-4 text-4xl">{service.icon}</div>
-                <h3 className="mb-1 text-xl font-semibold text-gray-900">
-                  {service.title}
-                </h3>
-                <p className="mb-2 text-sm font-medium text-blue-600">
-                  {service.professional}
-                </p>
-                <p className="text-sm text-gray-600">{service.description}</p>
-              </div>
-            ))}
-          </div>
-
-          <div className="mt-12 text-center">
-            <p className="mb-4 text-lg text-gray-600">
-              + Várias salas disponíveis para novos profissionais
-            </p>
-            <button
-              onClick={() => {
-                document
-                  .getElementById('rooms-section')
-                  ?.scrollIntoView({ behavior: 'smooth' });
-              }}
-              className="rounded-lg bg-blue-600 px-6 py-3 font-medium text-white transition-all hover:bg-blue-700 hover:shadow-lg"
-            >
-              Ver Salas Disponíveis
-            </button>
-          </div>
-        </div>
-      </section>
-
-      {/* Seção Imersiva de Espaços */}
-      <Rooms />
+      {/* Facilities Section */}
+      <FacilitiesSection />
 
       {/* CTA Section */}
-      <section className="cta-section relative overflow-hidden bg-gradient-to-br from-blue-600 to-blue-700 py-20">
+      <section className="from-rose-gold to-deep-purple relative overflow-hidden bg-gradient-to-br py-20">
         <div className="relative z-10 mx-auto max-w-4xl px-8 text-center lg:px-12">
-          <h2 className="mb-6 text-4xl font-bold text-white">
-            Pronto para fazer parte do Studio Garcia?
+          <h2 className="font-playfair mb-6 text-4xl font-bold text-white">
+            Pronto para transformar sua vida?
           </h2>
-          <p className="mb-8 text-xl text-blue-100">
-            Entre em contato conosco e agende uma visita sem compromisso
+          <p className="mb-8 text-xl text-white/90">
+            Dê o primeiro passo rumo ao sucesso profissional. Agende sua visita
+            hoje!
           </p>
           <div className="flex flex-wrap justify-center gap-4">
-            <button className="rounded-lg bg-white px-8 py-4 font-medium text-blue-600 transition-all hover:bg-gray-100 hover:shadow-lg">
-              Agendar Visita
+            <button className="text-rose-gold hover:bg-cream rounded-lg bg-white px-8 py-4 font-semibold transition-all hover:shadow-lg">
+              Agendar Visita Gratuita
             </button>
-            <button className="rounded-lg border-2 border-white px-8 py-4 font-medium text-white transition-all hover:bg-white hover:text-blue-600">
-              WhatsApp
+            <button className="hover:text-deep-purple rounded-lg border-2 border-white px-8 py-4 font-semibold text-white transition-all hover:bg-white">
+              Falar no WhatsApp
             </button>
           </div>
-        </div>
-        <div className="absolute inset-0 opacity-10">
-          <Balatro
-            color1="#c1121f"
-            color2="#344e41"
-            color3="#219ebc"
-            isRotate={true}
-            mouseInteraction={false}
-            pixelFilter={2000}
-            spinSpeed={1.0}
-            contrast={1.0}
-            lighting={0.2}
-            spinAmount={0.1}
-          />
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="bg-gray-900 py-12 text-white">
+      <footer className="bg-charcoal py-12 text-white">
         <div className="mx-auto max-w-7xl px-8 lg:px-12">
           <div className="grid gap-8 md:grid-cols-4">
             <div>
-              <h3 className="mb-4 text-lg font-semibold">Studio Garcia</h3>
+              <h3 className="text-rose-gold mb-4 text-lg font-semibold">
+                Studio Garcia Beauty Academy
+              </h3>
               <p className="text-sm text-gray-400">
-                O espaço ideal para o crescimento do seu negócio.
+                Transformando paixão em profissão desde 2009.
               </p>
             </div>
             <div>
               <h4 className="mb-4 text-sm font-semibold text-gray-400 uppercase">
-                Links
+                Links Rápidos
               </h4>
               <ul className="space-y-2 text-sm">
                 <li>
-                  <a href="#" className="hover:text-blue-400">
-                    Sobre
+                  <a
+                    href="#"
+                    className="hover:text-rose-gold transition-colors"
+                  >
+                    Sobre Nós
                   </a>
                 </li>
                 <li>
-                  <a href="#" className="hover:text-blue-400">
-                    Espaços
+                  <a
+                    href="#"
+                    className="hover:text-rose-gold transition-colors"
+                  >
+                    Cursos
                   </a>
                 </li>
                 <li>
-                  <a href="#" className="hover:text-blue-400">
-                    Contato
+                  <a
+                    href="#"
+                    className="hover:text-rose-gold transition-colors"
+                  >
+                    Depoimentos
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="#"
+                    className="hover:text-rose-gold transition-colors"
+                  >
+                    Blog
                   </a>
                 </li>
               </ul>
@@ -497,23 +105,84 @@ export default function Home() {
                 Contato
               </h4>
               <ul className="space-y-2 text-sm text-gray-400">
-                <li>(11) 9999-9999</li>
-                <li>contato@studiogarcia.com</li>
+                <li className="flex items-center gap-2">
+                  <svg
+                    className="h-4 w-4"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
+                    />
+                  </svg>
+                  (11) 99999-9999
+                </li>
+                <li className="flex items-center gap-2">
+                  <svg
+                    className="h-4 w-4"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                    />
+                  </svg>
+                  contato@studiogarcia.com.br
+                </li>
               </ul>
             </div>
             <div>
               <h4 className="mb-4 text-sm font-semibold text-gray-400 uppercase">
-                Endereço
+                Localização
               </h4>
               <p className="text-sm text-gray-400">
-                Rua Example, 123
+                Rua das Flores, 456
                 <br />
-                São Paulo - SP
+                Centro - Itaquaquecetuba/SP
+                <br />
+                CEP: 08570-000
               </p>
+              <div className="mt-4 flex gap-3">
+                <a
+                  href="#"
+                  className="hover:text-rose-gold text-gray-400 transition-colors"
+                >
+                  <svg
+                    className="h-6 w-6"
+                    fill="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
+                  </svg>
+                </a>
+                <a
+                  href="#"
+                  className="hover:text-rose-gold text-gray-400 transition-colors"
+                >
+                  <svg
+                    className="h-6 w-6"
+                    fill="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zM5.838 12a6.162 6.162 0 1112.324 0 6.162 6.162 0 01-12.324 0zM12 16a4 4 0 110-8 4 4 0 010 8zm4.965-10.405a1.44 1.44 0 112.881.001 1.44 1.44 0 01-2.881-.001z" />
+                  </svg>
+                </a>
+              </div>
             </div>
           </div>
           <div className="mt-8 border-t border-gray-800 pt-8 text-center text-sm text-gray-400">
-            <p>© 2024 Studio Garcia. Todos os direitos reservados.</p>
+            <p>
+              © 2024 Studio Garcia Beauty Academy. Todos os direitos
+              reservados.
+            </p>
           </div>
         </div>
       </footer>
