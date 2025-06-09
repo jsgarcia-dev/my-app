@@ -3,7 +3,9 @@
 import HeroSectionBalatro from '@/components/HeroSectionBalatro';
 import WhySection from '@/components/WhySection';
 import CoursesSection from '@/components/CoursesSection';
-import TestimonialsSection from '@/components/TestimonialsSection';
+import ServicesSection from '@/components/ServicesSection';
+// import ServicesLampSection from '@/components/ServicesLampSection';
+// import TestimonialsSection from '@/components/TestimonialsSection';
 import FacilitiesSection from '@/components/FacilitiesSection';
 import WhatsAppButton from '@/components/WhatsAppButton';
 
@@ -19,11 +21,14 @@ export default function Home() {
       {/* Why Section */}
       <WhySection />
 
+      {/* Services Section */}
+      <ServicesSection />
+
       {/* Courses Section */}
       <CoursesSection />
 
-      {/* Testimonials Section */}
-      <TestimonialsSection />
+      {/* Testimonials Section - HIDDEN FOR NOW */}
+      {/* <TestimonialsSection /> */}
 
       {/* Facilities Section */}
       <FacilitiesSection />

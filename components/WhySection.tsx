@@ -153,8 +153,8 @@ export default function WhySection() {
         },
       });
 
-      // Stats animation
-      if (statsRef.current) {
+      // Stats animation - commented out
+      /* if (statsRef.current) {
         gsap.fromTo(
           statsRef.current.children,
           { opacity: 0, scale: 0 },
@@ -171,7 +171,7 @@ export default function WhySection() {
             },
           }
         );
-      }
+      } */
     }, sectionRef);
 
     return () => ctx.revert();
@@ -243,8 +243,8 @@ export default function WhySection() {
               <div className="from-charcoal/50 absolute inset-0 bg-gradient-to-t to-transparent" />
             </div>
 
-            {/* Stats overlay */}
-            <div
+            {/* Stats overlay - hidden */}
+            {/* <div
               ref={statsRef}
               className="absolute -bottom-10 left-1/2 flex -translate-x-1/2 transform gap-4"
             >
@@ -260,7 +260,7 @@ export default function WhySection() {
                 <p className="text-rose-gold text-3xl font-bold">500+</p>
                 <p className="text-charcoal/70 text-sm">Alunos Formados</p>
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>
