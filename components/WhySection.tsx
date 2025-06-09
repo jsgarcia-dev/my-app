@@ -92,27 +92,6 @@ const differentials = [
       'Parcerias com salões e spas da região, além de orientação profissional para garantir sua colocação no mercado.',
     color: 'deep-purple',
   },
-  {
-    icon: (
-      <svg
-        className="h-8 w-8"
-        fill="none"
-        stroke="currentColor"
-        viewBox="0 0 24 24"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth={2}
-          d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"
-        />
-      </svg>
-    ),
-    title: 'Mentoria de Negócios',
-    description:
-      'Programa exclusivo de mentoria para alunos que desejam abrir seu próprio salão ou clínica de estética.',
-    color: 'rose-gold',
-  },
 ];
 
 export default function WhySection() {
@@ -217,8 +196,8 @@ export default function WhySection() {
             ref={titleRef}
             className="font-articulat  mb-4 text-4xl lg:text-5xl font-bold tracking-tight"
           >
-            Por Que Escolher o{' '}
-            <span className="text-charcoal font-bold">Studio Garcia</span>?
+            Nossos{' '}
+            <span className="text-charcoal font-bold">Valores</span>
           </h2>
           <div className="bg-gradient-beauty mx-auto h-1 w-24 rounded-full" />
         </div>
@@ -252,11 +231,14 @@ export default function WhySection() {
               ref={imageRef}
               className="relative h-[600px] overflow-hidden rounded-3xl shadow-2xl"
             >
-              <Image
-                src="https://via.placeholder.com/600x600/B76E79/FFFFFF?text=Sala+de+Aula"
-                alt="Sala de aula Studio Garcia"
-                fill
-                className="object-cover"
+              <video
+                src="/assets/fermale-demo.mp4"
+                className="absolute inset-0 w-full h-full object-cover scale-105"
+                style={{ objectPosition: 'center center' }}
+                autoPlay
+                loop
+                muted
+                playsInline
               />
               <div className="from-charcoal/50 absolute inset-0 bg-gradient-to-t to-transparent" />
             </div>

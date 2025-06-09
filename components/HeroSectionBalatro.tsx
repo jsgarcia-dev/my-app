@@ -104,18 +104,24 @@ export default function HeroSectionBalatro() {
       </div>
 
 
-      {/* Text in bottom left corner */}
-      <div ref={bottomTextRef} className="absolute bottom-8 sm:bottom-12 md:bottom-16 lg:bottom-20 left-4 sm:left-6 md:left-8 lg:left-12 xl:left-20 z-50 max-w-[280px] sm:max-w-[320px] md:max-w-[380px] lg:max-w-[420px] xl:max-w-[480px]">
-        <div className="flex items-center">
-          <h2 className="text-heading text-black font-bold text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl leading-tight uppercase">
-            Transforme sua Paixão em Profissão
-          </h2>
-          <a
-            href="#servicos"
-            className="inline-flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 bg-black rounded-full border-2 border-black transition-all duration-300 hover:bg-white hover:animate-bounce group flex-shrink-0 ml-3"
-          >
+      {/* Text and animated button centered in white space */}
+      <div ref={bottomTextRef} className="absolute bottom-8 sm:bottom-12 md:bottom-16 lg:bottom-20 left-[15%] -translate-x-1/2 z-50 flex items-center gap-6">
+        <h2 className="text-heading text-black font-bold text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl uppercase leading-tight max-w-[200px] sm:max-w-[250px] md:max-w-[300px]">
+          Transforme sua<br />Paixão em Profissão
+        </h2>
+        <a
+          href="#servicos"
+          className="relative inline-flex items-center justify-center w-12 h-12 sm:w-14 sm:h-14 bg-black rounded-full transition-all duration-500 hover:scale-105 group flex-shrink-0"
+        >
+          {/* Wave animations */}
+          <span className="absolute inset-0 rounded-full bg-black/20 animate-wave-1" />
+          <span className="absolute inset-0 rounded-full bg-black/15 animate-wave-2" />
+          <span className="absolute inset-0 rounded-full bg-black/10 animate-wave-3" />
+          
+          {/* Main circle */}
+          <span className="relative flex items-center justify-center w-full h-full bg-black rounded-full">
             <svg
-              className="w-5 h-5 sm:w-6 sm:h-6 text-white transition-colors duration-300 group-hover:text-black"
+              className="w-6 h-6 sm:w-7 sm:h-7 text-white animate-float"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -127,8 +133,8 @@ export default function HeroSectionBalatro() {
                 d="M19 14l-7 7m0 0l-7-7m7 7V3"
               />
             </svg>
-          </a>
-        </div>
+          </span>
+        </a>
       </div>
 
     </section>
