@@ -1,6 +1,10 @@
 import React from 'react';
 
-const HamburgerIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => {
+interface HamburgerIconProps extends React.SVGProps<SVGSVGElement> {
+  color?: string;
+}
+
+const HamburgerIcon: React.FC<HamburgerIconProps> = ({ color = 'black', ...props }) => {
   return (
     <svg
       width="32"
@@ -17,7 +21,7 @@ const HamburgerIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => {
         y1="6"
         x2="32"
         y2="6"
-        stroke="black"
+        stroke={color}
         strokeWidth="3"
         strokeLinecap="round"
         vectorEffect="non-scaling-stroke"
@@ -28,7 +32,7 @@ const HamburgerIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => {
         y1="18"
         x2="32"
         y2="18"
-        stroke="black"
+        stroke={color}
         strokeWidth="3"
         strokeLinecap="round"
         vectorEffect="non-scaling-stroke"

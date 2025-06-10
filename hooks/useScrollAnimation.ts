@@ -25,7 +25,7 @@ export function useScrollAnimation<T extends HTMLElement = HTMLDivElement>(
     start = 'top 80%',
     end = 'bottom 20%',
     scrub = false,
-    pin = false
+    pin = false,
   } = options;
 
   useEffect(() => {
@@ -54,23 +54,27 @@ export function useScrollAnimation<T extends HTMLElement = HTMLDivElement>(
         break;
     }
 
-    gsap.set(element, initialProps);
-
+    // Ensure element is visible first
+    element.style.opacity = '1';
+    
+    // Use gsap.from instead of gsap.to to avoid initial invisible state
     const scrollTriggerConfig: ScrollTrigger.Vars = {
       trigger: element,
       start,
       end,
-      toggleActions: scrub ? undefined : 'play none none reverse',
+      toggleActions: scrub ? undefined : 'play none none none',
       scrub,
-      pin
+      pin,
+      once: true,
     };
 
-    gsap.to(element, {
-      ...animationProps,
+    // Animate FROM the initial state, so content starts visible
+    gsap.from(element, {
+      ...initialProps,
       duration,
       delay,
       ease: 'power3.out',
-      scrollTrigger: scrollTriggerConfig
+      scrollTrigger: scrollTriggerConfig,
     });
 
     return () => {
