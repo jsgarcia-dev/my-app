@@ -109,38 +109,38 @@ export default function CoursesSection() {
   useEffect(() => {
     const ctx = gsap.context(() => {
       // Title animation
-      gsap.fromTo(
-        titleRef.current,
-        { opacity: 0, y: 50 },
-        {
+      if (titleRef.current) {
+        // Start with hidden content to prevent overlap
+        gsap.set(titleRef.current, { opacity: 0, y: 50 });
+
+        gsap.to(titleRef.current, {
           opacity: 1,
           y: 0,
           duration: 1,
           scrollTrigger: {
             trigger: titleRef.current,
             start: 'top 80%',
-            toggleActions: 'play none none reverse',
+            once: true,
           },
-        }
-      );
+        });
+      }
 
       // Filter buttons animation
-      if (filterRef.current) {
-        gsap.fromTo(
-          filterRef.current.children,
-          { opacity: 0, y: 20 },
-          {
-            opacity: 1,
-            y: 0,
-            duration: 0.6,
-            stagger: 0.1,
-            scrollTrigger: {
-              trigger: filterRef.current,
-              start: 'top 80%',
-              toggleActions: 'play none none reverse',
-            },
-          }
-        );
+      if (filterRef.current && filterRef.current.children.length > 0) {
+        // Start with hidden content to prevent overlap
+        gsap.set(filterRef.current.children, { opacity: 0, y: 20 });
+
+        gsap.to(filterRef.current.children, {
+          opacity: 1,
+          y: 0,
+          duration: 0.6,
+          stagger: 0.1,
+          scrollTrigger: {
+            trigger: filterRef.current,
+            start: 'top 80%',
+            once: true,
+          },
+        });
       }
 
       // Cards animation
@@ -202,15 +202,12 @@ export default function CoursesSection() {
 
       <div className="container mx-auto px-4 lg:px-8">
         {/* Title */}
-        <div className="mb-12 text-center">
-          <h2
-            ref={titleRef}
-            className="font-outfit text-charcoal mb-4 text-4xl font-bold lg:text-5xl tracking-tight"
-          >
-            Nossos <span className="text-charcoal font-bold">Cursos</span>{' '}
+        <div className="font-space-grotesk text-charcoal relative z-10 mb-18 text-center text-4xl font-bold tracking-tight lg:text-5xl">
+          <h2 ref={titleRef} className="mb-4">
+            Nossos <span className="text-rose-gold font-bold">Cursos</span>{' '}
             Profissionalizantes
           </h2>
-          <p className="text-charcoal/70 mx-auto max-w-2xl text-lg">
+          <p className="text-charcoal/70 mx-auto max-w-2xl font-sans text-lg font-normal tracking-normal">
             Escolha sua área de interesse e comece sua jornada rumo ao sucesso
             profissional
           </p>
@@ -227,8 +224,8 @@ export default function CoursesSection() {
               onClick={() => setActiveCategory(category)}
               className={`rounded-full px-6 py-3 font-medium transition-all duration-300 ${
                 activeCategory === category
-                  ? 'bg-[#2a9d8f] scale-105 transform text-white shadow-lg'
-                  : 'text-charcoal hover:bg-[#2a9d8f]/10 hover:text-[#2a9d8f] bg-white'
+                  ? 'scale-105 transform bg-[#2a9d8f] text-white shadow-lg'
+                  : 'text-charcoal bg-white hover:bg-[#2a9d8f]/10 hover:text-[#2a9d8f]'
               }`}
             >
               {category}
@@ -309,9 +306,7 @@ export default function CoursesSection() {
                   </div>
                 </div>
 
-                <Button
-                  className="mt-6 w-full bg-[#2a9d8f] hover:bg-[#2a9d8f]/90 font-semibold text-white"
-                >
+                <Button className="mt-6 w-full bg-[#2a9d8f] font-semibold text-white hover:bg-[#2a9d8f]/90">
                   Saiba Mais
                 </Button>
               </div>

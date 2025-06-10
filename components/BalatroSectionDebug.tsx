@@ -27,17 +27,18 @@ export default function BalatroSectionDebug() {
       {/* Content */}
       <div className="relative z-10 flex h-full items-center justify-center">
         <div className="mx-auto max-w-4xl px-8 text-center">
-          <h2 className="font-playfair text-white mb-6 text-4xl font-bold">
+          <h2 className="font-playfair mb-6 text-4xl font-bold text-white">
             Pronto para transformar sua vida?
           </h2>
-          <p className="mb-8 text-xl text-white/90">
-            Dê o primeiro passo rumo ao sucesso profissional. Agende sua visita hoje!
+          <p className="text-charcoal mb-8 text-xl">
+            Dê o primeiro passo rumo ao sucesso profissional. Agende sua visita
+            hoje!
           </p>
           <div className="flex flex-wrap justify-center gap-4">
             <button className="text-rose-gold hover:bg-cream rounded-lg bg-white px-8 py-4 font-semibold transition-all hover:shadow-lg">
               Agendar Visita Gratuita
             </button>
-            <button className="hover:text-deep-purple rounded-lg border-2 border-white px-8 py-4 font-semibold text-white transition-all hover:bg-white">
+            <button className="hover:text-deep-purple rounded-lg border-2 border-white px-8 py-4 font-semibold text-black transition-all hover:bg-black">
               Falar no WhatsApp
             </button>
           </div>

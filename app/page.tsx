@@ -39,20 +39,26 @@ export default function Home() {
       <ProfessionalsSection />
 
       {/* CTA Section */}
-      <section className="from-rose-gold to-deep-purple relative overflow-hidden bg-gradient-to-br py-20" data-menu-color="white">
+      <section
+        className="from-rose-gold to-deep-purple relative overflow-hidden bg-gradient-to-br py-20"
+        data-menu-color="white"
+      >
         <div className="relative z-10 mx-auto max-w-4xl px-8 text-center lg:px-12">
-          <h2 className="font-playfair mb-6 text-4xl font-bold text-white">
+          <h2 className="font-playfair text-charcoal mb-6 text-4xl font-bold">
             Pronto para transformar sua vida?
           </h2>
-          <p className="mb-8 text-xl text-white/90">
+          <p className="text-charcoal mb-8 text-xl">
             Dê o primeiro passo rumo ao sucesso profissional. Agende sua visita
             hoje!
           </p>
           <div className="flex flex-wrap justify-center gap-4">
-            <Link href="/agendamento" className="text-rose-gold hover:bg-cream rounded-lg bg-white px-8 py-4 font-semibold transition-all hover:shadow-lg inline-block">
+            <Link
+              href="/agendamento"
+              className="text-rose-gold hover:bg-cream inline-block rounded-lg bg-white px-8 py-4 font-semibold transition-all hover:shadow-lg"
+            >
               Agendar Horário
             </Link>
-            <button className="hover:text-deep-purple rounded-lg border-2 border-white px-8 py-4 font-semibold text-white transition-all hover:bg-white">
+            <button className="hover:text-deep-purple border-charcoal text-charcoal hover:bg-charcoal rounded-lg border-2 px-8 py-4 font-semibold transition-all">
               Falar no WhatsApp
             </button>
           </div>

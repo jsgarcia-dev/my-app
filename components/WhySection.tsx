@@ -105,43 +105,39 @@ export default function WhySection() {
     const ctx = gsap.context(() => {
       // Title animation
       if (titleRef.current) {
-        // Start with visible content
-        gsap.set(titleRef.current, { opacity: 1 });
-        
-        gsap.from(
-          titleRef.current,
-          { 
-            y: 50,
-            duration: 1,
-            scrollTrigger: {
-              trigger: titleRef.current,
-              start: 'top 85%',
-              once: true
-            },
-          }
-        );
+        // Start with hidden content to prevent overlap
+        gsap.set(titleRef.current, { opacity: 0, y: 50 });
+
+        gsap.to(titleRef.current, {
+          y: 0,
+          opacity: 1,
+          duration: 1,
+          scrollTrigger: {
+            trigger: titleRef.current,
+            start: 'top 85%',
+            once: true,
+          },
+        });
       }
 
       // Cards stagger animation
       if (cardsRef.current && cardsRef.current.children.length > 0) {
-        // Start with visible content
-        gsap.set(cardsRef.current.children, { opacity: 1 });
-        
-        gsap.from(
-          cardsRef.current.children,
-          { 
-            y: 60, 
-            scale: 0.95,
-            duration: 0.8,
-            stagger: 0.15,
-            ease: "power3.out",
-            scrollTrigger: {
-              trigger: cardsRef.current,
-              start: 'top 85%',
-              once: true
-            },
-          }
-        );
+        // Start with hidden content to prevent overlap
+        gsap.set(cardsRef.current.children, { opacity: 0, y: 60, scale: 0.95 });
+
+        gsap.to(cardsRef.current.children, {
+          y: 0,
+          scale: 1,
+          opacity: 1,
+          duration: 0.8,
+          stagger: 0.15,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: cardsRef.current,
+            start: 'top 85%',
+            once: true,
+          },
+        });
       }
 
       // Image parallax
@@ -192,15 +188,14 @@ export default function WhySection() {
         <div className="bg-deep-purple/5 absolute -right-20 bottom-1/4 h-60 w-60 rounded-full blur-3xl" />
       </div>
 
-      <div className="container mx-auto px-4 lg:px-8">
+      <div className="container mx-auto mt-10 px-4 lg:px-8">
         {/* Title */}
-        <div className="mb-16 text-center">
-          <h2
-            ref={titleRef}
-            className="font-articulat  mb-4 text-4xl lg:text-5xl font-bold tracking-tight"
-          >
+        <div className="font-space-grotesk text-charcoal relative z-10 mb-24 text-center text-4xl lg:text-5xl">
+          <h2 ref={titleRef} className="mb-12">
             Nossos{' '}
-            <span className="text-charcoal font-bold">Valores</span>
+            <span className="text-rose-gold font-bold tracking-tight">
+              Valores
+            </span>
           </h2>
           <div className="bg-gradient-beauty mx-auto h-1 w-24 rounded-full" />
         </div>
@@ -236,7 +231,7 @@ export default function WhySection() {
             >
               <video
                 src="/assets/fermale-demo.mp4"
-                className="absolute inset-0 w-full h-full object-cover scale-105"
+                className="absolute inset-0 h-full w-full scale-105 object-cover"
                 style={{ objectPosition: 'center center' }}
                 autoPlay
                 loop
