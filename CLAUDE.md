@@ -462,3 +462,16 @@ To fully implement the requirements:
 - Focus on local market positioning in Itaquaquecetuba
 - Emphasis on professional education and career transformation
 - Integration of education, practice, and entrepreneurship support
+
+## Important Development Rules
+
+### Component Fix Policy
+
+**NEVER create separate "fix" components or example components to demonstrate fixes.** When encountering issues in existing components:
+
+1. **Always fix issues directly** in the problematic component file
+2. **Do not create** separate example files, demo components, or implementation guides
+3. **Update the existing component** with the necessary fixes inline
+4. **Preserve the original component structure** while implementing fixes
+
+This ensures cleaner code organization and prevents unnecessary file proliferation.

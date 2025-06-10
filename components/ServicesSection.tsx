@@ -3,6 +3,7 @@
 import { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { useAnimatedTitle } from '@/hooks/useAnimatedTitle';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -123,26 +124,14 @@ const services = [
 
 export default function ServicesSection() {
   const sectionRef = useRef<HTMLElement>(null);
-  const titleRef = useRef<HTMLHeadingElement>(null);
+  const titleContainerRef = useRef<HTMLDivElement>(null);
   const cardsRef = useRef<HTMLDivElement>(null);
+
+  // Use the animated title hook
+  useAnimatedTitle(titleContainerRef);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      // Title animation
-      if (titleRef.current) {
-        gsap.set(titleRef.current, { opacity: 1 });
-
-        gsap.from(titleRef.current, {
-          y: 50,
-          duration: 1,
-          ease: 'power3.out',
-          scrollTrigger: {
-            trigger: titleRef.current,
-            start: 'top 85%',
-            once: true,
-          },
-        });
-      }
 
       // Cards animation
       if (cardsRef.current) {
@@ -184,8 +173,8 @@ export default function ServicesSection() {
 
       <div className="container mx-auto px-4 lg:px-8">
         {/* Title */}
-        <div className="font-space-grotesk text-charcoal mb-16 text-center text-4xl font-bold tracking-tight lg:text-5xl">
-          <h2 ref={titleRef} className="mb-4">
+        <div ref={titleContainerRef} className="font-space-grotesk text-charcoal mb-16 text-center text-4xl font-bold tracking-tight lg:text-5xl">
+          <h2 className="mb-4">
             Nossos <span className="text-rose-gold">Serviços</span>
           </h2>
           <p className="text-charcoal/70 mx-auto max-w-2xl font-sans text-lg font-normal tracking-normal">

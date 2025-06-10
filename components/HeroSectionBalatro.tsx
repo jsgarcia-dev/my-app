@@ -74,12 +74,12 @@ export default function HeroSectionBalatro() {
       <BalatroBackground />
 
       {/* Logo acima e textos abaixo centralizados no balatro */}
-      <div className="absolute left-[50%] top-[35%] -translate-x-1/2 -translate-y-1/2 z-30 flex flex-col items-center">
-        <div ref={logoRef} className="mb-6">
+      <div className="absolute left-[50%] top-[45%] sm:top-[40%] md:top-[35%] -translate-x-1/2 -translate-y-1/2 z-30 flex flex-col items-center px-4">
+        <div ref={logoRef} className="mb-4 sm:mb-6">
           <img 
             src="/assets/Studio Garcia Beauty Academy-logo_Logo Studio Garcia.svg" 
             alt="Studio Garcia Beauty Academy" 
-            className="w-48 h-48 sm:w-56 sm:h-56 md:w-64 md:h-64 lg:w-72 lg:h-72 xl:w-80 xl:h-80 object-contain"
+            className="w-32 h-32 sm:w-48 sm:h-48 md:w-56 md:h-56 lg:w-64 lg:h-64 xl:w-72 xl:h-72 object-contain"
             style={{ 
               filter: 'brightness(0) invert(1) drop-shadow(0 4px 12px rgba(0, 0, 0, 0.8)) drop-shadow(0 2px 4px rgba(0, 0, 0, 0.6))' 
             }}
@@ -88,14 +88,14 @@ export default function HeroSectionBalatro() {
         <div className="flex flex-col items-center">
           <h1 
             ref={titleRef} 
-            className="font-articulat font-extrabold text-white text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl text-center"
+            className="font-articulat font-extrabold text-white text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl text-center"
             style={{ textShadow: '0 4px 12px rgba(0, 0, 0, 0.8), 0 2px 4px rgba(0, 0, 0, 0.6)' }}
           >
             STUDIO GARCIA
           </h1>
           <p 
             ref={subtitleRef} 
-            className="font-articulat font-medium text-white text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl mt-1 text-center"
+            className="font-articulat font-medium text-white text-base sm:text-lg md:text-xl lg:text-2xl xl:text-3xl mt-1 text-center"
             style={{ textShadow: '0 4px 12px rgba(0, 0, 0, 0.8), 0 2px 4px rgba(0, 0, 0, 0.6)' }}
           >
             Beauty & Academy
@@ -105,13 +105,13 @@ export default function HeroSectionBalatro() {
 
 
       {/* Text and animated button centered in white space */}
-      <div ref={bottomTextRef} className="absolute bottom-8 sm:bottom-12 md:bottom-16 lg:bottom-20 left-[15%] -translate-x-1/2 z-50 flex items-center gap-6">
-        <h2 className="text-heading text-black font-bold text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl uppercase leading-tight max-w-[200px] sm:max-w-[250px] md:max-w-[300px]">
+      <div ref={bottomTextRef} className="absolute bottom-6 sm:bottom-8 md:bottom-12 lg:bottom-16 left-[50%] sm:left-[15%] -translate-x-1/2 sm:-translate-x-0 z-50 flex items-center gap-3 sm:gap-4 md:gap-6 px-4 sm:px-0">
+        <h2 className="text-heading text-black font-bold text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl uppercase leading-tight max-w-[150px] sm:max-w-[200px] md:max-w-[250px]">
           Transforme sua<br />Paixão em Profissão
         </h2>
         <a
           href="#servicos"
-          className="relative inline-flex items-center justify-center w-12 h-12 sm:w-14 sm:h-14 bg-black rounded-full transition-all duration-500 hover:scale-105 group flex-shrink-0"
+          className="relative inline-flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 bg-black rounded-full transition-all duration-500 hover:scale-105 group flex-shrink-0"
         >
           {/* Wave animations */}
           <span className="absolute inset-0 rounded-full bg-black/20 animate-wave-1" />

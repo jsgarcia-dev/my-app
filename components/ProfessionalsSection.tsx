@@ -11,6 +11,7 @@ gsap.registerPlugin(ScrollTrigger)
 
 export default function ProfessionalsSection() {
   const sectionRef = useRef<HTMLElement>(null)
+  const titleRef = useRef<HTMLDivElement>(null)
   const cardsRef = useRef<HTMLDivElement[]>([])
   const particlesRef = useRef<HTMLDivElement>(null)
   const [professionals, setProfessionals] = useState<any[]>([])
@@ -31,8 +32,28 @@ export default function ProfessionalsSection() {
     const section = sectionRef.current
     const cards = cardsRef.current
     const particles = particlesRef.current
+    const titleSection = titleRef.current
 
     if (!section || !particles) return
+
+    // Title and description animation
+    if (titleSection && titleSection.children.length > 0) {
+      gsap.set(titleSection.children, { opacity: 0, y: 50 })
+      
+      ScrollTrigger.create({
+        trigger: titleSection,
+        start: 'top 80%',
+        onEnter: () => {
+          gsap.to(titleSection.children, {
+            opacity: 1,
+            y: 0,
+            duration: 1,
+            stagger: 0.2,
+            ease: 'power3.out'
+          })
+        }
+      })
+    }
 
     // Particles animation
     const particlesTimeline = gsap.timeline({ repeat: -1 })
@@ -148,11 +169,11 @@ export default function ProfessionalsSection() {
       </div>
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-rose-gold to-deep-purple bg-clip-text text-transparent">
-            Nossos Profissionais
+        <div ref={titleRef} className="text-center mb-16 font-space-grotesk text-charcoal text-4xl font-bold lg:text-5xl tracking-tight relative z-10">
+          <h2 className="mb-4">
+            Nossos <span className="text-rose-gold">Profissionais</span>
           </h2>
-          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+          <p className="text-charcoal/70 mx-auto max-w-2xl text-lg font-sans font-normal tracking-normal">
             Conheça nossa equipe de especialistas prontos para transformar seu visual
           </p>
         </div>

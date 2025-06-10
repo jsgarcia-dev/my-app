@@ -205,14 +205,14 @@ export default function Menu() {
     <div className="h-full w-full" ref={container}>
       {/* Sobreposição do Menu Quadrada e Responsiva */}
       <div
-        className="menu-overlay fixed top-4 right-[5%] z-[190] aspect-square w-[calc(100vw-2rem)] rounded-2xl bg-black lg:top-8 lg:aspect-auto lg:h-[500px] lg:w-[520px]"
+        className="menu-overlay fixed inset-0 z-[190] bg-black sm:inset-auto sm:top-4 sm:right-[5%] sm:aspect-square sm:w-[calc(100vw-2rem)] sm:rounded-2xl lg:top-8 lg:aspect-auto lg:h-[500px] lg:w-[520px]"
         style={{
           clipPath: 'polygon(100% 0, 100% 0, 100% 100%, 100% 100%)',
           pointerEvents: isMenuOpen ? 'auto' : 'none',
         }}
       >
         {/* Padding interno responsivo */}
-        <div className="flex h-full flex-col px-6 pt-16 pb-10 lg:px-12 lg:pt-20 lg:pb-12">
+        <div className="flex h-full flex-col px-6 pt-20 pb-10 sm:pt-16 lg:px-12 lg:pt-20 lg:pb-12">
           <div className="menu-links mb-auto">
             {menuLinks.map((link, index) => (
               <div key={index} className="mb-4 overflow-hidden lg:mb-6">
@@ -223,7 +223,7 @@ export default function Menu() {
                   {/* Tamanho da fonte responsivo */}
                   <Link
                     href={link.path}
-                    className="text-[40px] leading-[110%] font-normal tracking-[-0.02em] text-white transition-colors hover:text-gray-300 lg:text-[48px]"
+                    className="text-[32px] sm:text-[40px] leading-[110%] font-normal tracking-[-0.02em] text-white transition-colors hover:text-gray-300 lg:text-[48px]"
                   >
                     {link.label}
                   </Link>
@@ -261,7 +261,7 @@ export default function Menu() {
       {/* Container do Ícone - posicionamento fixo com classes Tailwind */}
       <div
         ref={menuIconContainerRef}
-        className={`fixed top-8 right-[5%] z-[210] flex h-auto w-auto cursor-pointer items-center justify-center transition-all duration-300`}
+        className={`fixed top-4 sm:top-6 lg:top-8 right-4 sm:right-[5%] z-[210] flex h-auto w-auto cursor-pointer items-center justify-center transition-all duration-300`}
         onClick={toggleMenu}
       >
         <HamburgerIcon color={isMenuOpen ? 'white' : menuColor} />

@@ -6,6 +6,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import FacilitiesSlider from './FacilitiesSlider';
+import { useAnimatedTitle } from '@/hooks/useAnimatedTitle';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -108,12 +109,20 @@ const categories = [
 
 export default function FacilitiesSection() {
   const sectionRef = useRef<HTMLElement>(null);
-  const titleRef = useRef<HTMLHeadingElement>(null);
+  const titleContainerRef = useRef<HTMLDivElement>(null);
   const [viewMode, setViewMode] = useState<'slider' | 'grid'>('slider');
   const [activeCategory, setActiveCategory] = useState('all');
   const [selectedFacility, setSelectedFacility] = useState<number | null>(null);
   const [filteredFacilities, setFilteredFacilities] = useState(facilities);
   const gridRef = useRef<HTMLDivElement>(null);
+
+  // Use the new animated title hook
+  useAnimatedTitle(titleContainerRef, {
+    duration: 0.8,
+    stagger: 0.2,
+    yOffset: 50,
+    start: 'top 80%',
+  });
 
   useEffect(() => {
     if (activeCategory === 'all') {
@@ -128,22 +137,6 @@ export default function FacilitiesSection() {
   useEffect(() => {
     if (viewMode === 'grid') {
       const ctx = gsap.context(() => {
-        // Title animation
-        gsap.fromTo(
-          titleRef.current,
-          { opacity: 0, y: 50 },
-          {
-            opacity: 1,
-            y: 0,
-            duration: 1,
-            scrollTrigger: {
-              trigger: titleRef.current,
-              start: 'top 80%',
-              toggleActions: 'play none none reverse',
-            },
-          }
-        );
-
         // Grid items animation
         ScrollTrigger.batch('.facility-card', {
           onEnter: (batch) =>
@@ -237,14 +230,14 @@ export default function FacilitiesSection() {
         </div>
 
         {/* Title */}
-        <div className="mb-12 text-center">
-          <h2
-            ref={titleRef}
-            className="font-articulat text-charcoal mb-4 text-4xl font-bold lg:text-5xl tracking-tight"
-          >
-            Nossas <span className="text-deep-purple">Instalações</span>
+        <div 
+          ref={titleContainerRef}
+          className="mb-12 text-center font-space-grotesk text-charcoal text-4xl font-bold lg:text-5xl tracking-tight relative z-10"
+        >
+          <h2 className="mb-4">
+            Nossas <span className="text-rose-gold">Instalações</span>
           </h2>
-          <p className="text-charcoal/70 mx-auto max-w-2xl text-lg">
+          <p className="text-charcoal/70 mx-auto max-w-2xl text-lg font-sans font-normal tracking-normal">
             Infraestrutura moderna e equipamentos profissionais para sua melhor
             experiência de aprendizado
           </p>
