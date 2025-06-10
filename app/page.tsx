@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import HeroSectionBalatro from '@/components/HeroSectionBalatro';
 import WhySection from '@/components/WhySection';
 import CoursesSection from '@/components/CoursesSection';
@@ -7,6 +8,7 @@ import ServicesSection from '@/components/ServicesSection';
 // import ServicesLampSection from '@/components/ServicesLampSection';
 // import TestimonialsSection from '@/components/TestimonialsSection';
 import FacilitiesSection from '@/components/FacilitiesSection';
+import ProfessionalsSection from '@/components/ProfessionalsSection';
 import WhatsAppButton from '@/components/WhatsAppButton';
 
 export default function Home() {
@@ -33,6 +35,9 @@ export default function Home() {
       {/* Facilities Section */}
       <FacilitiesSection />
 
+      {/* Professionals Section */}
+      <ProfessionalsSection />
+
       {/* CTA Section */}
       <section className="from-rose-gold to-deep-purple relative overflow-hidden bg-gradient-to-br py-20" data-menu-color="white">
         <div className="relative z-10 mx-auto max-w-4xl px-8 text-center lg:px-12">
@@ -44,9 +49,9 @@ export default function Home() {
             hoje!
           </p>
           <div className="flex flex-wrap justify-center gap-4">
-            <button className="text-rose-gold hover:bg-cream rounded-lg bg-white px-8 py-4 font-semibold transition-all hover:shadow-lg">
-              Agendar Visita Gratuita
-            </button>
+            <Link href="/agendamento" className="text-rose-gold hover:bg-cream rounded-lg bg-white px-8 py-4 font-semibold transition-all hover:shadow-lg inline-block">
+              Agendar Horário
+            </Link>
             <button className="hover:text-deep-purple rounded-lg border-2 border-white px-8 py-4 font-semibold text-white transition-all hover:bg-white">
               Falar no WhatsApp
             </button>
@@ -86,6 +91,22 @@ export default function Home() {
                   >
                     Cursos
                   </a>
+                </li>
+                <li>
+                  <Link
+                    href="/agendamento"
+                    className="hover:text-rose-gold transition-colors"
+                  >
+                    Agendar Horário
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/admin"
+                    className="hover:text-rose-gold transition-colors"
+                  >
+                    Área do Profissional
+                  </Link>
                 </li>
                 <li>
                   <a
