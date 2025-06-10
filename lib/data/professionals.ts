@@ -1,93 +1,240 @@
+import { getSupabaseAdmin } from '@/lib/supabase/client'
 import { Professional } from '@/lib/types/booking'
 
-export const professionals: Professional[] = [
-  {
-    id: '1',
-    name: 'Ana Silva',
-    specialties: ['Coloração', 'Corte', 'Escova'],
-    avatar: 'https://via.placeholder.com/150',
-    bio: 'Especialista em coloração com 10 anos de experiência',
-    workingHours: {
-      monday: { start: '09:00', end: '18:00', breaks: [{ start: '12:00', end: '13:00' }] },
-      tuesday: { start: '09:00', end: '18:00', breaks: [{ start: '12:00', end: '13:00' }] },
-      wednesday: { start: '09:00', end: '18:00', breaks: [{ start: '12:00', end: '13:00' }] },
-      thursday: { start: '09:00', end: '18:00', breaks: [{ start: '12:00', end: '13:00' }] },
-      friday: { start: '09:00', end: '18:00', breaks: [{ start: '12:00', end: '13:00' }] },
-      saturday: { start: '09:00', end: '14:00' },
-      sunday: null
-    },
-    servicesOffered: [
-      { id: '1', name: 'Corte Feminino', duration: 60, price: 80 },
-      { id: '2', name: 'Coloração', duration: 120, price: 200 },
-      { id: '3', name: 'Escova Progressiva', duration: 180, price: 350 },
-      { id: '4', name: 'Hidratação', duration: 60, price: 120 }
-    ]
-  },
-  {
-    id: '2',
-    name: 'Beatriz Santos',
-    specialties: ['Maquiagem', 'Design de Sobrancelhas'],
-    avatar: 'https://via.placeholder.com/150',
-    bio: 'Maquiadora profissional especializada em noivas',
-    workingHours: {
-      monday: { start: '10:00', end: '19:00', breaks: [{ start: '14:00', end: '15:00' }] },
-      tuesday: { start: '10:00', end: '19:00', breaks: [{ start: '14:00', end: '15:00' }] },
-      wednesday: { start: '10:00', end: '19:00', breaks: [{ start: '14:00', end: '15:00' }] },
-      thursday: { start: '10:00', end: '19:00', breaks: [{ start: '14:00', end: '15:00' }] },
-      friday: { start: '10:00', end: '19:00', breaks: [{ start: '14:00', end: '15:00' }] },
-      saturday: { start: '09:00', end: '18:00' },
-      sunday: null
-    },
-    servicesOffered: [
-      { id: '5', name: 'Maquiagem Social', duration: 60, price: 150 },
-      { id: '6', name: 'Maquiagem Noiva', duration: 90, price: 350 },
-      { id: '7', name: 'Design de Sobrancelhas', duration: 30, price: 60 },
-      { id: '8', name: 'Extensão de Cílios', duration: 120, price: 250 }
-    ]
-  },
-  {
-    id: '3',
-    name: 'Carlos Oliveira',
-    specialties: ['Barbearia', 'Corte Masculino'],
-    avatar: 'https://via.placeholder.com/150',
-    bio: 'Barbeiro tradicional com técnicas modernas',
-    workingHours: {
-      monday: { start: '09:00', end: '20:00', breaks: [{ start: '13:00', end: '14:00' }] },
-      tuesday: { start: '09:00', end: '20:00', breaks: [{ start: '13:00', end: '14:00' }] },
-      wednesday: { start: '09:00', end: '20:00', breaks: [{ start: '13:00', end: '14:00' }] },
-      thursday: { start: '09:00', end: '20:00', breaks: [{ start: '13:00', end: '14:00' }] },
-      friday: { start: '09:00', end: '20:00', breaks: [{ start: '13:00', end: '14:00' }] },
-      saturday: { start: '08:00', end: '16:00' },
-      sunday: null
-    },
-    servicesOffered: [
-      { id: '9', name: 'Corte Masculino', duration: 30, price: 50 },
-      { id: '10', name: 'Barba', duration: 30, price: 40 },
-      { id: '11', name: 'Corte + Barba', duration: 45, price: 80 },
-      { id: '12', name: 'Platinado', duration: 90, price: 150 }
-    ]
-  },
-  {
-    id: '4',
-    name: 'Diana Costa',
-    specialties: ['Manicure', 'Pedicure', 'Nail Art'],
-    avatar: 'https://via.placeholder.com/150',
-    bio: 'Especialista em nail art e unhas decoradas',
-    workingHours: {
-      monday: { start: '09:00', end: '18:00', breaks: [{ start: '12:30', end: '13:30' }] },
-      tuesday: { start: '09:00', end: '18:00', breaks: [{ start: '12:30', end: '13:30' }] },
-      wednesday: { start: '09:00', end: '18:00', breaks: [{ start: '12:30', end: '13:30' }] },
-      thursday: { start: '09:00', end: '18:00', breaks: [{ start: '12:30', end: '13:30' }] },
-      friday: { start: '09:00', end: '18:00', breaks: [{ start: '12:30', end: '13:30' }] },
-      saturday: { start: '09:00', end: '15:00' },
-      sunday: null
-    },
-    servicesOffered: [
-      { id: '13', name: 'Manicure', duration: 45, price: 40 },
-      { id: '14', name: 'Pedicure', duration: 60, price: 50 },
-      { id: '15', name: 'Manicure + Pedicure', duration: 90, price: 80 },
-      { id: '16', name: 'Unhas em Gel', duration: 90, price: 120 },
-      { id: '17', name: 'Nail Art', duration: 30, price: 30 }
-    ]
+// Cache para evitar muitas consultas ao banco
+let professionalsCache: Professional[] | null = null
+let cacheExpiry: number = 0
+
+export async function getAllProfessionals(): Promise<Professional[]> {
+  // Verificar cache (válido por 5 minutos)
+  if (professionalsCache && Date.now() < cacheExpiry) {
+    return professionalsCache
   }
-]
+
+  try {
+    const supabase = getSupabaseAdmin()
+    const { data: professionalsData, error } = await supabase
+      .from('professionals')
+      .select(`
+        *,
+        working_hours(*)
+      `)
+      .eq('status', 'active')
+      .order('name')
+
+    if (error) {
+      console.error('Error fetching professionals:', error)
+      // Retornar dados estáticos em caso de erro
+      return getStaticProfessionals()
+    }
+
+    // Buscar todos os serviços
+    const { data: servicesData, error: servicesError } = await supabase
+      .from('services')
+      .select('*')
+      .eq('status', 'active')
+
+    if (servicesError) {
+      console.error('Error fetching services:', servicesError)
+      return getStaticProfessionals()
+    }
+
+    // Buscar a tabela de associação services_offered
+    const { data: servicesOfferedData, error: servicesOfferedError } = await supabase
+      .from('services_offered')
+      .select('*')
+
+    if (servicesOfferedError) {
+      console.error('Error fetching services_offered:', servicesOfferedError)
+    }
+
+    const professionals: Professional[] = professionalsData?.map(prof => {
+      // Mapear horários de trabalho
+      const workingHours: any = {}
+      const dayNames = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday']
+      
+      prof.working_hours?.forEach((wh: any) => {
+        const dayName = dayNames[wh.day_of_week]
+        if (wh.is_working) {
+          workingHours[dayName] = {
+            start: wh.start_time,
+            end: wh.end_time,
+            breaks: [{ start: '12:00', end: '13:00' }] // Padrão por enquanto
+          }
+        } else {
+          workingHours[dayName] = null
+        }
+      })
+
+      // Mapear serviços oferecidos baseado na tabela services_offered
+      const professionalServicesOffered = servicesOfferedData?.filter(
+        so => so.professional_id === prof.id && so.is_available
+      ) || []
+      
+      const servicesOffered = professionalServicesOffered.map(so => {
+        const service = servicesData?.find(s => s.id === so.service_id)
+        if (!service) return null
+        
+        return {
+          id: service.id,
+          name: service.name,
+          duration: so.custom_duration || service.base_duration,
+          price: so.custom_price || service.base_price,
+          description: service.description
+        }
+      }).filter(Boolean)
+
+      return {
+        id: prof.id,
+        name: prof.name,
+        specialties: prof.specialties || [],
+        avatar: prof.avatar_url || '/logo.png',
+        bio: prof.bio || '',
+        workingHours,
+        servicesOffered
+      }
+    }) || []
+
+    // Atualizar cache
+    professionalsCache = professionals
+    cacheExpiry = Date.now() + 5 * 60 * 1000 // 5 minutos
+
+    return professionals
+  } catch (error) {
+    console.error('Error fetching professionals:', error)
+    return getStaticProfessionals()
+  }
+}
+
+export async function getProfessionalById(id: string): Promise<Professional | undefined> {
+  const professionals = await getAllProfessionals()
+  return professionals.find(p => p.id === id)
+}
+
+// Função para buscar profissional por UUIDs do banco
+export async function getProfessionalByUUID(uuid: string): Promise<Professional | undefined> {
+  const professionals = await getAllProfessionals()
+  return professionals.find(p => p.id === uuid)
+}
+
+// Limpar cache (útil para desenvolvimento)
+export function clearProfessionalsCache() {
+  professionalsCache = null
+  cacheExpiry = 0
+}
+
+// Dados estáticos como fallback
+function getStaticProfessionals(): Professional[] {
+  return [
+    {
+      id: '00000000-0000-0000-0000-000000000001',
+      name: 'Ana Silva',
+      specialties: ['Coloração', 'Corte', 'Escova'],
+      avatar: '/logo.png',
+      bio: 'Especialista em coloração e cortes modernos com mais de 10 anos de experiência.',
+      workingHours: {
+        monday: { start: '09:00', end: '18:00', breaks: [{ start: '12:00', end: '13:00' }] },
+        tuesday: { start: '09:00', end: '18:00', breaks: [{ start: '12:00', end: '13:00' }] },
+        wednesday: { start: '09:00', end: '18:00', breaks: [{ start: '12:00', end: '13:00' }] },
+        thursday: { start: '09:00', end: '18:00', breaks: [{ start: '12:00', end: '13:00' }] },
+        friday: { start: '09:00', end: '18:00', breaks: [{ start: '12:00', end: '13:00' }] },
+        saturday: { start: '09:00', end: '17:00', breaks: [{ start: '12:00', end: '13:00' }] },
+        sunday: null
+      },
+      servicesOffered: [
+        {
+          id: '00000000-0000-0000-0000-000000000101',
+          name: 'Corte Feminino',
+          duration: 60,
+          price: 80,
+          description: 'Corte feminino com lavagem e secagem'
+        },
+        {
+          id: '00000000-0000-0000-0000-000000000102',
+          name: 'Coloração',
+          duration: 180,
+          price: 250,
+          description: 'Coloração completa com produtos premium'
+        }
+      ]
+    },
+    {
+      id: '00000000-0000-0000-0000-000000000002',
+      name: 'Beatriz Santos',
+      specialties: ['Maquiagem', 'Design de Sobrancelhas'],
+      avatar: '/logo.png',
+      bio: 'Maquiadora profissional especializada em makes para noivas e eventos.',
+      workingHours: {
+        monday: { start: '10:00', end: '19:00', breaks: [{ start: '12:00', end: '13:00' }] },
+        tuesday: { start: '10:00', end: '19:00', breaks: [{ start: '12:00', end: '13:00' }] },
+        wednesday: { start: '10:00', end: '19:00', breaks: [{ start: '12:00', end: '13:00' }] },
+        thursday: { start: '10:00', end: '19:00', breaks: [{ start: '12:00', end: '13:00' }] },
+        friday: { start: '10:00', end: '19:00', breaks: [{ start: '12:00', end: '13:00' }] },
+        saturday: { start: '10:00', end: '18:00', breaks: [{ start: '12:00', end: '13:00' }] },
+        sunday: null
+      },
+      servicesOffered: [
+        {
+          id: '00000000-0000-0000-0000-000000000201',
+          name: 'Maquiagem Social',
+          duration: 60,
+          price: 150,
+          description: 'Maquiagem para eventos sociais'
+        }
+      ]
+    },
+    {
+      id: '00000000-0000-0000-0000-000000000003',
+      name: 'Carlos Oliveira',
+      specialties: ['Barbearia', 'Corte Masculino'],
+      avatar: '/logo.png',
+      bio: 'Barbeiro especializado em cortes masculinos modernos e barbas.',
+      workingHours: {
+        monday: { start: '08:00', end: '20:00', breaks: [{ start: '12:00', end: '13:00' }] },
+        tuesday: { start: '08:00', end: '20:00', breaks: [{ start: '12:00', end: '13:00' }] },
+        wednesday: { start: '08:00', end: '20:00', breaks: [{ start: '12:00', end: '13:00' }] },
+        thursday: { start: '08:00', end: '20:00', breaks: [{ start: '12:00', end: '13:00' }] },
+        friday: { start: '08:00', end: '20:00', breaks: [{ start: '12:00', end: '13:00' }] },
+        saturday: { start: '08:00', end: '18:00', breaks: [{ start: '12:00', end: '13:00' }] },
+        sunday: null
+      },
+      servicesOffered: [
+        {
+          id: '00000000-0000-0000-0000-000000000301',
+          name: 'Corte Masculino',
+          duration: 45,
+          price: 50,
+          description: 'Corte masculino tradicional ou moderno'
+        }
+      ]
+    },
+    {
+      id: '00000000-0000-0000-0000-000000000004',
+      name: 'Diana Costa',
+      specialties: ['Manicure', 'Pedicure', 'Nail Art'],
+      avatar: '/logo.png',
+      bio: 'Especialista em nail art e técnicas modernas de manicure.',
+      workingHours: {
+        monday: { start: '09:00', end: '17:00', breaks: [{ start: '12:00', end: '13:00' }] },
+        tuesday: { start: '09:00', end: '17:00', breaks: [{ start: '12:00', end: '13:00' }] },
+        wednesday: { start: '09:00', end: '17:00', breaks: [{ start: '12:00', end: '13:00' }] },
+        thursday: { start: '09:00', end: '17:00', breaks: [{ start: '12:00', end: '13:00' }] },
+        friday: { start: '09:00', end: '17:00', breaks: [{ start: '12:00', end: '13:00' }] },
+        saturday: { start: '09:00', end: '16:00', breaks: [{ start: '12:00', end: '13:00' }] },
+        sunday: null
+      },
+      servicesOffered: [
+        {
+          id: '00000000-0000-0000-0000-000000000401',
+          name: 'Manicure',
+          duration: 60,
+          price: 45,
+          description: 'Manicure completa com esmaltação'
+        }
+      ]
+    }
+  ]
+}
+
+// Compatibilidade temporária - remover após atualizar todo o código
+export const professionals = getStaticProfessionals()

@@ -54,19 +54,23 @@ export function useScrollAnimation<T extends HTMLElement = HTMLDivElement>(
         break;
     }
 
-    gsap.set(element, initialProps);
-
+    // Ensure element is visible first
+    element.style.opacity = '1';
+    
+    // Use gsap.from instead of gsap.to to avoid initial invisible state
     const scrollTriggerConfig: ScrollTrigger.Vars = {
       trigger: element,
       start,
       end,
-      toggleActions: scrub ? undefined : 'play none none reverse',
+      toggleActions: scrub ? undefined : 'play none none none',
       scrub,
       pin,
+      once: true,
     };
 
-    gsap.to(element, {
-      ...animationProps,
+    // Animate FROM the initial state, so content starts visible
+    gsap.from(element, {
+      ...initialProps,
       duration,
       delay,
       ease: 'power3.out',

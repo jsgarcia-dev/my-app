@@ -10,7 +10,8 @@ import { Button } from '@/components/ui/button'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { AuthGuard } from '@/components/admin/AuthGuard'
 import { AvailabilityManager } from '@/components/admin/AvailabilityManager'
-import { professionals } from '@/lib/data/professionals'
+import { ServicesManager } from '@/components/admin/ServicesManager'
+import { getAllProfessionals } from '@/lib/data/professionals'
 import { Booking, Professional } from '@/lib/types/booking'
 import { cn } from '@/lib/utils'
 
@@ -24,9 +25,11 @@ export default function AdminDashboardPage() {
   useEffect(() => {
     const professionalId = sessionStorage.getItem('adminProfessionalId')
     if (professionalId) {
-      const prof = professionals.find(p => p.id === professionalId)
-      setProfessional(prof || null)
-      fetchBookings(professionalId)
+      getAllProfessionals().then(professionals => {
+        const prof = professionals.find(p => p.id === professionalId)
+        setProfessional(prof || null)
+        fetchBookings(professionalId)
+      })
     }
   }, [])
 
@@ -170,11 +173,12 @@ export default function AdminDashboardPage() {
 
           {/* Main Content Tabs */}
           <Tabs defaultValue="today" className="space-y-4">
-            <TabsList className="grid w-full grid-cols-5">
+            <TabsList className="grid w-full grid-cols-6">
               <TabsTrigger value="today">Hoje</TabsTrigger>
               <TabsTrigger value="upcoming">Próximos</TabsTrigger>
               <TabsTrigger value="calendar">Calendário</TabsTrigger>
               <TabsTrigger value="availability">Disponibilidade</TabsTrigger>
+              <TabsTrigger value="services">Serviços</TabsTrigger>
               <TabsTrigger value="settings">Configurações</TabsTrigger>
             </TabsList>
 
@@ -255,6 +259,11 @@ export default function AdminDashboardPage() {
             {/* Availability Tab */}
             <TabsContent value="availability" className="space-y-4">
               <AvailabilityManager professional={professional} />
+            </TabsContent>
+
+            {/* Services Tab */}
+            <TabsContent value="services" className="space-y-4">
+              <ServicesManager professionalId={professional.id} />
             </TabsContent>
 
             {/* Settings Tab */}

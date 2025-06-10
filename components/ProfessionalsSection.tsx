@@ -1,10 +1,10 @@
 'use client'
 
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import { professionals } from '@/lib/data/professionals'
+import { getAllProfessionals } from '@/lib/data/professionals'
 import { Calendar, Star, Clock } from 'lucide-react'
 
 gsap.registerPlugin(ScrollTrigger)
@@ -13,6 +13,19 @@ export default function ProfessionalsSection() {
   const sectionRef = useRef<HTMLElement>(null)
   const cardsRef = useRef<HTMLDivElement[]>([])
   const particlesRef = useRef<HTMLDivElement>(null)
+  const [professionals, setProfessionals] = useState<any[]>([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    getAllProfessionals().then(profs => {
+      console.log('Professionals loaded:', profs)
+      setProfessionals(profs)
+      setLoading(false)
+    }).catch(err => {
+      console.error('Error loading professionals:', err)
+      setLoading(false)
+    })
+  }, [])
 
   useEffect(() => {
     const section = sectionRef.current
@@ -110,7 +123,7 @@ export default function ProfessionalsSection() {
       ScrollTrigger.getAll().forEach(trigger => trigger.kill())
       particlesTimeline.kill()
     }
-  }, [])
+  }, [professionals])
 
   return (
     <section 
@@ -144,8 +157,13 @@ export default function ProfessionalsSection() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {professionals.map((professional, index) => (
+        {loading ? (
+          <div className="flex justify-center items-center py-12">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-rose-gold"></div>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {professionals.map((professional, index) => (
             <div
               key={professional.id}
               ref={(el) => { if (el) cardsRef.current[index] = el }}
@@ -210,8 +228,9 @@ export default function ProfessionalsSection() {
                 </Link>
               </div>
             </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
       </div>
     </section>
   )

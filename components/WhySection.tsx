@@ -104,38 +104,41 @@ export default function WhySection() {
   useEffect(() => {
     const ctx = gsap.context(() => {
       // Title animation
-      gsap.fromTo(
-        titleRef.current,
-        { opacity: 0, y: 50 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 1,
-          scrollTrigger: {
-            trigger: titleRef.current,
-            start: 'top 80%',
-            end: 'bottom 20%',
-            toggleActions: 'play none none reverse',
-          },
-        }
-      );
+      if (titleRef.current) {
+        // Start with visible content
+        gsap.set(titleRef.current, { opacity: 1 });
+        
+        gsap.from(
+          titleRef.current,
+          { 
+            y: 50,
+            duration: 1,
+            scrollTrigger: {
+              trigger: titleRef.current,
+              start: 'top 85%',
+              once: true
+            },
+          }
+        );
+      }
 
       // Cards stagger animation
-      if (cardsRef.current) {
-        gsap.fromTo(
+      if (cardsRef.current && cardsRef.current.children.length > 0) {
+        // Start with visible content
+        gsap.set(cardsRef.current.children, { opacity: 1 });
+        
+        gsap.from(
           cardsRef.current.children,
-          { opacity: 0, y: 60, scale: 0.9 },
-          {
-            opacity: 1,
-            y: 0,
-            scale: 1,
+          { 
+            y: 60, 
+            scale: 0.95,
             duration: 0.8,
-            stagger: 0.1,
+            stagger: 0.15,
+            ease: "power3.out",
             scrollTrigger: {
               trigger: cardsRef.current,
-              start: 'top 80%',
-              end: 'bottom 20%',
-              toggleActions: 'play none none reverse',
+              start: 'top 85%',
+              once: true
             },
           }
         );

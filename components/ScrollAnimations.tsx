@@ -14,9 +14,15 @@ export default function ScrollAnimations({ children }: ScrollAnimationsProps) {
   useEffect(() => {
     // Configurações globais do ScrollTrigger
     ScrollTrigger.defaults({
-      toggleActions: 'play none none reverse',
+      toggleActions: 'play none none none',
       markers: false,
+      once: true,
     });
+    
+    // Refresh ScrollTrigger after a delay to ensure all content is loaded
+    const refreshTimeout = setTimeout(() => {
+      ScrollTrigger.refresh();
+    }, 100);
 
     // Animação de linha decorativa
     const decorativeLines = gsap.utils.toArray('.decorative-line');
@@ -147,6 +153,7 @@ export default function ScrollAnimations({ children }: ScrollAnimationsProps) {
 
     // Cleanup
     return () => {
+      clearTimeout(refreshTimeout);
       ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
     };
   }, []);

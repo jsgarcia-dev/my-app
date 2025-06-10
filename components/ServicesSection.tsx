@@ -89,39 +89,46 @@ export default function ServicesSection() {
   useEffect(() => {
     const ctx = gsap.context(() => {
       // Title animation
-      gsap.fromTo(
-        titleRef.current,
-        { opacity: 0, y: 50 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 1,
-          scrollTrigger: {
-            trigger: titleRef.current,
-            start: 'top 80%',
-            toggleActions: 'play none none reverse',
-          },
-        }
-      );
-
-      // Cards animation
-      if (cardsRef.current) {
-        gsap.fromTo(
-          '.service-card',
-          { opacity: 0, y: 100, scale: 0.9 },
-          {
-            opacity: 1,
-            y: 0,
-            scale: 1,
-            duration: 0.8,
-            stagger: 0.15,
+      if (titleRef.current) {
+        gsap.set(titleRef.current, { opacity: 1 });
+        
+        gsap.from(
+          titleRef.current,
+          { 
+            y: 50,
+            duration: 1,
+            ease: "power3.out",
             scrollTrigger: {
-              trigger: cardsRef.current,
-              start: 'top 80%',
-              toggleActions: 'play none none reverse',
+              trigger: titleRef.current,
+              start: 'top 85%',
+              once: true
             },
           }
         );
+      }
+
+      // Cards animation
+      if (cardsRef.current) {
+        const cards = gsap.utils.toArray('.service-card');
+        if (cards.length > 0) {
+          gsap.set(cards, { opacity: 1 });
+          
+          gsap.from(
+            cards,
+            { 
+              y: 80, 
+              scale: 0.95,
+              duration: 0.8,
+              stagger: 0.2,
+              ease: "power3.out",
+              scrollTrigger: {
+                trigger: cardsRef.current,
+                start: 'top 85%',
+                once: true
+              },
+            }
+          );
+        }
       }
     }, sectionRef);
 

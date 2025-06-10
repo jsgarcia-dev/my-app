@@ -745,3 +745,23 @@
 .animate-float {
   animation: float 2s ease-in-out infinite;
 }
+
+/* GSAP Animation Fallback */
+/* Ensure all content is visible */
+section,
+section > *,
+.service-card,
+.professional-card {
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+/* Override any inline opacity: 0 styles */
+[style*="opacity: 0"] {
+  opacity: 1 !important;
+}
+
+/* Ensure transforms don't hide content */
+.gsap-init {
+  transform: none !important;
+}

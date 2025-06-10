@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -25,8 +25,9 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 
-import { professionals } from '@/lib/data/professionals'
+import { getAllProfessionals } from '@/lib/data/professionals'
 import { validatePin } from '@/lib/data/professional-auth'
+import { setAuthToken } from '@/lib/utils/auth'
 
 const formSchema = z.object({
   professionalId: z.string().min(1, 'Selecione um profissional'),
@@ -37,6 +38,12 @@ export default function AdminLoginPage() {
   const router = useRouter()
   const [error, setError] = useState('')
   const [isLoading, setIsLoading] = useState(false)
+  const [professionals, setProfessionals] = useState<any[]>([])
+
+  // Carregar profissionais ao montar o componente
+  useEffect(() => {
+    getAllProfessionals().then(setProfessionals)
+  }, [])
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -51,14 +58,16 @@ export default function AdminLoginPage() {
     setIsLoading(true)
 
     try {
-      // Validate PIN
-      if (!validatePin(values.professionalId, values.pin)) {
-        setError('PIN incorreto')
+      // Validate PIN (agora é assíncrono)
+      const isValid = await validatePin(values.professionalId, values.pin)
+      if (!isValid) {
+        setError('PIN incorreto ou conta bloqueada')
         setIsLoading(false)
         return
       }
 
-      // Store auth in session storage (in production, use secure cookies)
+      // Store auth in session storage with new auth token
+      setAuthToken(values.professionalId, values.pin)
       sessionStorage.setItem('adminProfessionalId', values.professionalId)
       sessionStorage.setItem('adminAuth', 'true')
 

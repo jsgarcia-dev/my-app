@@ -10,6 +10,7 @@ import { ptBR } from 'date-fns/locale/pt-BR'
 import { Calendar as CalendarIcon } from 'lucide-react'
 
 import { cn } from '@/lib/utils'
+import { formatFullDateBR } from '@/lib/utils/date-time-br'
 import { Button } from '@/components/ui/button'
 import { Calendar } from '@/components/ui/calendar'
 import {
@@ -163,7 +164,13 @@ export function BookingForm({ professionals, onSubmit, preselectedProfessionalId
   }, [selectedProfessional, selectedDate])
   
   const timeSlots = selectedProfessional && selectedDate
-    ? generateTimeSlots(selectedProfessional, selectedDate, existingBookings, selectedDateAvailability)
+    ? generateTimeSlots(
+        selectedProfessional, 
+        selectedDate, 
+        existingBookings, 
+        selectedDateAvailability,
+        selectedService?.duration || 30 // Pass service duration
+      )
     : []
 
   const handleProfessionalSelect = (professional: Professional) => {
@@ -177,6 +184,7 @@ export function BookingForm({ professionals, onSubmit, preselectedProfessionalId
   const handleServiceSelect = (service: Service) => {
     setSelectedService(service)
     form.setValue('serviceId', service.id)
+    form.setValue('time', '') // Reset time when service changes
   }
 
   const handleSubmit = (values: z.infer<typeof formSchema>) => {
@@ -248,7 +256,7 @@ export function BookingForm({ professionals, onSubmit, preselectedProfessionalId
                     >
                       <CalendarIcon className="mr-2 h-4 w-4" />
                       {field.value ? (
-                        format(field.value, "PPP", { locale: ptBR })
+                        formatFullDateBR(field.value)
                       ) : (
                         <span>Selecione uma data</span>
                       )}
@@ -278,6 +286,14 @@ export function BookingForm({ professionals, onSubmit, preselectedProfessionalId
         {selectedDate && selectedService && (
           <div>
             <h3 className="text-lg font-semibold mb-4">4. Escolha o Horário</h3>
+            <div className="mb-4 p-3 bg-blue-50 rounded-lg">
+              <p className="text-sm text-blue-700">
+                <strong>Duração do serviço:</strong> {selectedService.duration} minutos
+              </p>
+              <p className="text-xs text-blue-600 mt-1">
+                Os horários disponíveis consideram a duração completa do serviço
+              </p>
+            </div>
             <FormField
               control={form.control}
               name="time"
@@ -288,6 +304,7 @@ export function BookingForm({ professionals, onSubmit, preselectedProfessionalId
                       slots={timeSlots}
                       selectedTime={field.value}
                       onSelect={(time) => field.onChange(time)}
+                      serviceDuration={selectedService.duration}
                     />
                   </FormControl>
                   <FormMessage />

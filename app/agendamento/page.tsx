@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { BookingForm } from '@/components/booking/BookingForm'
 import { BookingFormData } from '@/lib/types/booking'
-import { professionals } from '@/lib/data/professionals'
+import { getAllProfessionals } from '@/lib/data/professionals'
 import { generateConfirmationToken, calculateEndTime } from '@/lib/utils/booking'
 import { format } from 'date-fns'
 
@@ -12,7 +12,16 @@ export default function BookingPage() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [professionals, setProfessionals] = useState<any[]>([])
+  const [loading, setLoading] = useState(true)
   const preselectedProfessionalId = searchParams.get('professional')
+
+  useEffect(() => {
+    getAllProfessionals().then(profs => {
+      setProfessionals(profs)
+      setLoading(false)
+    })
+  }, [])
 
   const handleBookingSubmit = async (data: BookingFormData) => {
     setIsSubmitting(true)
@@ -60,6 +69,17 @@ export default function BookingPage() {
     } finally {
       setIsSubmitting(false)
     }
+  }
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-50 py-12 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-rose-gold mx-auto"></div>
+          <p className="mt-4 text-gray-600">Carregando profissionais...</p>
+        </div>
+      </div>
+    )
   }
 
   return (

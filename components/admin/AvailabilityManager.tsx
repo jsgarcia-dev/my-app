@@ -9,6 +9,8 @@ import { Professional } from '@/lib/types/booking'
 import { DayAvailability } from '@/lib/types/availability'
 import { cn } from '@/lib/utils'
 import { TimeSlotEditor } from './TimeSlotEditor'
+import { getAuthHeaders } from '@/lib/utils/auth'
+import { normalizeWorkingHours } from '@/lib/utils/date-time-br'
 
 interface AvailabilityManagerProps {
   professional: Professional
@@ -82,7 +84,7 @@ export function AvailabilityManager({ professional }: AvailabilityManagerProps) 
     const promises = Array.from(selectedDates).map(async (dateStr) => {
       const response = await fetch('/api/availability', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: getAuthHeaders(),
         body: JSON.stringify({
           professionalId: professional.id,
           date: dateStr,
@@ -90,6 +92,11 @@ export function AvailabilityManager({ professional }: AvailabilityManagerProps) 
           customHours
         })
       })
+      
+      if (!response.ok) {
+        const error = await response.text()
+        console.error('Failed to save availability:', response.status, error)
+      }
       
       return response.ok
     })
@@ -102,19 +109,33 @@ export function AvailabilityManager({ professional }: AvailabilityManagerProps) 
 
   const saveTimeSlots = async (date: Date, hours: any) => {
     const dateStr = format(date, 'yyyy-MM-dd')
+    
+    // Normalizar horários para formato HH:mm
+    const normalizedHours = normalizeWorkingHours(hours)
+    
+    console.log('Saving time slots:', {
+      date: dateStr,
+      originalHours: hours,
+      normalizedHours,
+      professionalId: professional.id
+    })
+    
     const response = await fetch('/api/availability', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: getAuthHeaders(),
       body: JSON.stringify({
         professionalId: professional.id,
         date: dateStr,
         isAvailable: true,
-        customHours: hours
+        customHours: normalizedHours
       })
     })
     
     if (response.ok) {
       await fetchAvailabilities()
+    } else {
+      const error = await response.text()
+      console.error('Failed to save time slots:', response.status, error)
     }
   }
 

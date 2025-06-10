@@ -6,9 +6,10 @@ import Link from 'next/link'
 import { CheckCircle, Calendar, Clock, User, Phone } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Booking, Professional, Service } from '@/lib/types/booking'
-import { professionals } from '@/lib/data/professionals'
+import { getAllProfessionals } from '@/lib/data/professionals'
 import { formatBookingDate } from '@/lib/utils/booking'
 import { parseISO } from 'date-fns'
+import { formatDateTimeBR } from '@/lib/utils/date-time-br'
 
 export default function BookingConfirmationPage() {
   const searchParams = useSearchParams()
@@ -32,6 +33,7 @@ export default function BookingConfirmationPage() {
         setBooking(bookingData)
         
         // Find professional and service
+        const professionals = await getAllProfessionals()
         const prof = professionals.find(p => p.id === bookingData.professionalId)
         const serv = prof?.servicesOffered.find(s => s.id === bookingData.serviceId)
         
@@ -69,15 +71,6 @@ export default function BookingConfirmationPage() {
     )
   }
 
-  const whatsappMessage = encodeURIComponent(
-    `Olá! Gostaria de confirmar meu agendamento:\n\n` +
-    `📅 Data: ${formatBookingDate(parseISO(booking.date))}\n` +
-    `⏰ Horário: ${booking.startTime}\n` +
-    `✂️ Serviço: ${service.name}\n` +
-    `👤 Profissional: ${professional.name}\n` +
-    `📱 Telefone: ${booking.customerPhone}\n\n` +
-    `Token de confirmação: ${booking.confirmationToken}`
-  )
 
   return (
     <div className="min-h-screen bg-gray-50 py-12">
@@ -85,9 +78,9 @@ export default function BookingConfirmationPage() {
         <div className="bg-white rounded-lg shadow-sm p-6 md:p-8">
           <div className="text-center mb-8">
             <CheckCircle className="w-16 h-16 text-green-500 mx-auto mb-4" />
-            <h1 className="text-3xl font-bold text-gray-900">Agendamento Realizado!</h1>
+            <h1 className="text-3xl font-bold text-gray-900">Agendamento Confirmado!</h1>
             <p className="mt-2 text-gray-600">
-              Seu agendamento foi criado com sucesso. Aguardamos você!
+              Seu agendamento foi confirmado com sucesso. Aguardamos você!
             </p>
           </div>
 
@@ -154,20 +147,15 @@ export default function BookingConfirmationPage() {
           </div>
 
           <div className="flex flex-col sm:flex-row gap-4">
-            <a
-              href={`https://wa.me/55${booking.customerPhone}?text=${whatsappMessage}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex-1"
-            >
-              <Button className="w-full" size="lg">
-                Confirmar via WhatsApp
-              </Button>
-            </a>
-            
             <Link href="/" className="flex-1">
               <Button variant="outline" className="w-full" size="lg">
                 Voltar ao Início
+              </Button>
+            </Link>
+            
+            <Link href="/agendamento" className="flex-1">
+              <Button className="w-full" size="lg">
+                Agendar Outro Serviço
               </Button>
             </Link>
           </div>
