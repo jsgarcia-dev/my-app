@@ -14,7 +14,7 @@
   --font-space-grotesk: var(--font-space-grotesk);
   --font-epilogue: var(--font-epilogue);
   --font-outfit: var(--font-outfit);
-  --font-articulat: "articulat-cf", sans-serif;
+  --font-articulat: 'articulat-cf', sans-serif;
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -53,12 +53,12 @@
 :root {
   --radius: 0.625rem;
   /* Beauty Academy Color Palette */
-  --rose-gold: #B76E79;
-  --deep-purple: #6B46C1;
-  --soft-pink: #FFC0CB;
-  --cream: #FAF0E6;
+  --rose-gold: #b76e79;
+  --deep-purple: #6b46c1;
+  --soft-pink: #ffc0cb;
+  --cream: #faf0e6;
   --charcoal: #333333;
-  
+
   /* Theme Colors using new palette */
   --background: oklch(0.985 0.004 64.815); /* cream background */
   --foreground: oklch(0.25 0 0); /* charcoal text */
@@ -136,19 +136,20 @@
     scroll-behavior: smooth;
     font-weight: 500; /* Articulat CF Regular */
   }
-  
+
   /* Default font for text elements */
-  p, span {
-    font-family: "articulat-cf", sans-serif;
+  p,
+  span {
+    font-family: 'articulat-cf', sans-serif;
     font-weight: 500; /* Articulat CF Regular */
   }
-  
+
   /* Hide scrollbar */
   * {
     scrollbar-width: none; /* Firefox */
     -ms-overflow-style: none; /* IE and Edge */
   }
-  
+
   *::-webkit-scrollbar {
     display: none; /* Chrome, Safari and Opera */
   }
@@ -184,7 +185,8 @@
   }
 
   .animate-slideInDescription {
-    animation: slideInDescription 1s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+    animation: slideInDescription 1s cubic-bezier(0.25, 0.46, 0.45, 0.94)
+      forwards;
     opacity: 0;
     transform: translateY(40px);
     filter: blur(8px);
@@ -244,7 +246,9 @@
 
   /* Smooth hover effects */
   .hover-lift {
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    transition:
+      transform 0.3s ease,
+      box-shadow 0.3s ease;
   }
 
   .hover-lift:hover {
@@ -264,48 +268,48 @@
     transform: translate3d(0, 0, 0);
     backface-visibility: hidden;
   }
-  
+
   .slide-bg {
     will-change: transform;
     backface-visibility: hidden;
     transform: translate3d(0, 0, 0);
   }
-  
+
   .slide-content-wrapper {
     will-change: transform, opacity;
     backface-visibility: hidden;
   }
-  
+
   /* Ensure proper stacking */
   #rooms-section {
     position: relative;
     isolation: isolate;
   }
-  
+
   /* Fix overflow issues */
   .room-slide-simple .slide-bg {
     position: absolute;
     inset: 0;
   }
-  
+
   .room-image-wrapper {
     will-change: transform, opacity, filter;
     backface-visibility: hidden;
     transform: translate3d(0, 0, 0);
     overflow: hidden;
   }
-  
+
   .room-image {
     will-change: transform, opacity;
     backface-visibility: hidden;
     transform: translate3d(0, 0, 0);
   }
-  
+
   .room-content {
     will-change: transform, opacity;
     backface-visibility: hidden;
   }
-  
+
   /* Reveal mask animation */
   .reveal-mask {
     will-change: transform;
@@ -313,30 +317,28 @@
     transform: translate3d(0, 0, 0);
     transform-origin: bottom center;
   }
-  
+
   /* Room features */
   .room-feature {
     will-change: transform, opacity;
   }
-  
+
   /* Ensure no gaps between sections */
   #rooms-section {
     margin-top: -1px;
   }
-  
+
   /* Progress indicator styles */
-  .fixed button[aria-label*="slide"] {
+  .fixed button[aria-label*='slide'] {
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
   }
 
-  
   /* Smooth animation optimizations */
   .slide-image-wrapper img {
     transform: translate3d(0, 0, 0);
     backface-visibility: hidden;
   }
-  
 
   /* Rooms section integration */
   #rooms-section {
@@ -348,126 +350,125 @@
   #rooms-section .sticky {
     scroll-snap-align: start;
   }
-  
+
   /* Beauty Academy Custom Utilities */
   .text-rose-gold {
-    color: #B76E79 !important;
+    color: #b76e79 !important;
   }
-  
+
   .text-deep-purple {
-    color: #6B46C1 !important;
+    color: #6b46c1 !important;
   }
-  
+
   .text-charcoal {
     color: #333333 !important;
   }
-  
+
   .bg-rose-gold {
-    background-color: #B76E79 !important;
+    background-color: #b76e79 !important;
   }
-  
+
   .bg-deep-purple {
-    background-color: #6B46C1 !important;
+    background-color: #6b46c1 !important;
   }
-  
+
   .bg-soft-pink {
-    background-color: #FFC0CB !important;
+    background-color: #ffc0cb !important;
   }
-  
+
   .bg-cream {
-    background-color: #FAF0E6 !important;
+    background-color: #faf0e6 !important;
   }
-  
+
   .bg-charcoal {
     background-color: #333333 !important;
   }
-  
+
   .border-rose-gold {
-    border-color: #B76E79 !important;
+    border-color: #b76e79 !important;
   }
-  
+
   .border-deep-purple {
-    border-color: #6B46C1 !important;
+    border-color: #6b46c1 !important;
   }
-  
+
   .gradient-beauty {
-    background: linear-gradient(135deg, #B76E79, #6B46C1) !important;
+    background: linear-gradient(135deg, #b76e79, #6b46c1) !important;
   }
-  
+
   .gradient-beauty-soft {
-    background: linear-gradient(135deg, #FFC0CB, #B76E79) !important;
+    background: linear-gradient(135deg, #ffc0cb, #b76e79) !important;
   }
-  
+
   /* Hover states with proper specificity */
   .hover\:bg-rose-gold:hover {
-    background-color: #B76E79 !important;
+    background-color: #b76e79 !important;
   }
-  
+
   .hover\:bg-deep-purple:hover {
-    background-color: #6B46C1 !important;
+    background-color: #6b46c1 !important;
   }
-  
+
   .hover\:text-rose-gold:hover {
-    color: #B76E79 !important;
+    color: #b76e79 !important;
   }
-  
+
   .hover\:text-deep-purple:hover {
-    color: #6B46C1 !important;
+    color: #6b46c1 !important;
   }
-  
+
   .hover\:text-white:hover {
     color: white !important;
   }
-  
-  
+
   /* Font family utilities */
   .font-playfair {
     font-family: var(--font-playfair);
   }
-  
+
   .font-montserrat {
     font-family: var(--font-montserrat);
   }
-  
+
   .font-inter {
     font-family: var(--font-inter);
   }
-  
+
   /* Fontes modernas para títulos */
   .font-space-grotesk {
     font-family: var(--font-space-grotesk);
   }
-  
+
   .font-epilogue {
     font-family: var(--font-epilogue);
   }
-  
+
   .font-outfit {
     font-family: var(--font-outfit);
   }
-  
+
   /* Articulat CF font utilities */
   .font-articulat {
-    font-family: "articulat-cf", sans-serif;
+    font-family: 'articulat-cf', sans-serif;
   }
-  
+
   /* Typography classes for Articulat CF */
   .text-heading {
-    font-family: "articulat-cf", sans-serif;
+    font-family: 'articulat-cf', sans-serif;
     font-weight: 800; /* Bold */
   }
-  
+
   .text-body {
-    font-family: "articulat-cf", sans-serif;
+    font-family: 'articulat-cf', sans-serif;
     font-weight: 500; /* Regular */
   }
-  
+
   /* Default text styles */
   .text-default {
-    font-family: "articulat-cf", sans-serif;
+    font-family: 'articulat-cf', sans-serif;
     font-weight: 500; /* Regular */
   }
-  
+
   /* Line clamp utility */
   .line-clamp-2 {
     display: -webkit-box;
@@ -475,14 +476,14 @@
     -webkit-box-orient: vertical;
     overflow: hidden;
   }
-  
+
   .line-clamp-3 {
     display: -webkit-box;
     -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
     overflow: hidden;
   }
-  
+
   /* WhatsApp floating button styles */
   .whatsapp-float {
     position: fixed;
@@ -491,21 +492,23 @@
     z-index: 999;
     width: 60px;
     height: 60px;
-    background-color: #25D366;
+    background-color: #25d366;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     box-shadow: 0 4px 20px rgba(37, 211, 102, 0.5);
     cursor: pointer;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    transition:
+      transform 0.3s ease,
+      box-shadow 0.3s ease;
   }
-  
+
   .whatsapp-float:hover {
     transform: scale(1.1);
     box-shadow: 0 6px 30px rgba(37, 211, 102, 0.7);
   }
-  
+
   .whatsapp-float::after {
     content: '';
     position: absolute;
@@ -515,7 +518,7 @@
     background: rgba(37, 211, 102, 0.2);
     animation: whatsapp-pulse 1.5s infinite;
   }
-  
+
   @keyframes whatsapp-pulse {
     0% {
       transform: scale(1);
@@ -526,10 +529,6 @@
       opacity: 0;
     }
   }
-
-
-
-
 
   /* Smooth opacity transitions */
   .opacity-transition {
@@ -557,24 +556,23 @@
       scroll-behavior: smooth;
     }
   }
-  
+
   /* Parallax performance optimizations */
   #rooms-section {
     transform: translate3d(0, 0, 0);
     backface-visibility: hidden;
     perspective: 1000px;
   }
-  
+
   /* Force hardware acceleration for smooth animations */
   .parallax-layer,
-  [class*="slide-"],
-  [class*="text-container"] {
+  [class*='slide-'],
+  [class*='text-container'] {
     transform: translate3d(0, 0, 0);
     -webkit-transform: translate3d(0, 0, 0);
     backface-visibility: hidden;
     -webkit-backface-visibility: hidden;
   }
-  
 }
 
 @keyframes fadeInLeft {
@@ -660,8 +658,8 @@
 
 /* Inverted border radius mask for Balatro */
 .balatro-inverted {
-  -webkit-mask-image: url('/assets/curva-balatro-responsive-final.svg');
-  mask-image: url('/assets/curva-balatro-responsive-final.svg');
+  -webkit-mask-image: url('/assets/balatro.svg');
+  mask-image: url('/assets/balatro.svg');
   -webkit-mask-repeat: no-repeat;
   mask-repeat: no-repeat;
   -webkit-mask-position: center center;
@@ -685,7 +683,8 @@
 
 /* Natural wave animations */
 @keyframes wave-1 {
-  0%, 100% {
+  0%,
+  100% {
     transform: scale(1);
     opacity: 0;
   }
@@ -696,7 +695,8 @@
 }
 
 @keyframes wave-2 {
-  0%, 100% {
+  0%,
+  100% {
     transform: scale(1);
     opacity: 0;
   }
@@ -707,7 +707,8 @@
 }
 
 @keyframes wave-3 {
-  0%, 100% {
+  0%,
+  100% {
     transform: scale(1);
     opacity: 0;
   }
@@ -719,7 +720,8 @@
 
 /* Gentle floating animation for arrow */
 @keyframes float {
-  0%, 100% {
+  0%,
+  100% {
     transform: translateY(0);
   }
   50% {
@@ -757,7 +759,7 @@ section > *,
 }
 
 /* Override any inline opacity: 0 styles */
-[style*="opacity: 0"] {
+[style*='opacity: 0'] {
   opacity: 1 !important;
 }
 
